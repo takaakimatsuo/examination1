@@ -57,6 +57,8 @@ sql/create.sql にて各プロパティの説明を確認できます。
 
 ** 成功 response: **
 
+- HTTP Status: 201
+
 ```
 {
   "message": "Recipe successfully created!",
@@ -74,6 +76,8 @@ sql/create.sql にて各プロパティの説明を確認できます。
 ```
 
 ** 失敗 response: **
+
+- HTTP Status: 400
 
 ```
 {
@@ -93,6 +97,8 @@ GET /recipes
 ```
 
 ### 期待する response 形式:
+
+- HTTP Status: 200
 
 ```
 {
@@ -137,6 +143,8 @@ GET /recipes/1
 
 ### 期待する response 形式:
 
+- HTTP Status: 200
+
 ```
 {
   "message": "Recipe details by id",
@@ -152,6 +160,18 @@ GET /recipes/1
 }
 ```
 
+** 失敗 response (指定 id のレシピが存在しない場合): **
+
+- HTTP Status: 404
+
+```
+{
+  "message":"No Recipe found"
+}
+```
+
+
+
 ## PATCH /recipes/{id} エンドポイント
 
 指定 id のレシピを更新し、更新したレシピを返します。
@@ -165,8 +185,9 @@ Body フィールド:
 title, making_time, serves, ingredients, cost
 ```
 
-
 ### 期待する response 形式:
+
+- HTTP Status: 200
 
 ```
 {
@@ -182,7 +203,19 @@ title, making_time, serves, ingredients, cost
   ]
 }
 ```
-  
+
+** 失敗 response (指定 id のレシピが存在しない場合): **
+
+- HTTP Status: 404
+
+```
+{
+  "message":"No Recipe found"
+}
+```
+
+
+
 ## DELETE /recipes/{id} エンドポイント
 
 指定 id のレシピを削除します。
@@ -197,13 +230,11 @@ DELETE /recipes/1
 
 ** 成功 response: **
 
-```
-{
-  "message": "Recipe successfully removed!"
-}
-```
+- HTTP Status: 204
 
 ** 失敗 response (指定 id のレシピが存在しない場合): **
+
+- HTTP Status: 404
 
 ```
 {
