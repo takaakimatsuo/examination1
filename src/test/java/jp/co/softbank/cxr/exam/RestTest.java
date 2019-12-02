@@ -80,7 +80,7 @@ class RestTest {
         .body(readMessageFromFile("request-POST-recipe.json"))
         .post(POST_RECIPE_PATH)
       .then()
-        .statusCode(200)
+        .statusCode(201)
         .body("message", equalTo("Recipe successfully created!"))
         .body("recipe[0].title", equalTo("トマトスープ"))
         .body("recipe[0].making_time", equalTo("15分"))
@@ -131,8 +131,7 @@ class RestTest {
     given()
     .delete(DELETE_RECIPE_PATH + id)
     .then()
-      .statusCode(200)
-      .body("message", equalTo("Recipe successfully removed!"));
+      .statusCode(204);
   }
   
   @DisplayName("/GET/{id} recipe")
