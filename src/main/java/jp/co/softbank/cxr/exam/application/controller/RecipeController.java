@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RecipeController {
 
+
   private final RecipeManager recipeManager;
 
   /**
@@ -43,7 +44,7 @@ public class RecipeController {
     log.info("Request sent to /recipes/{}", id);
     System.out.println("Request sent to /recipes/{" + id + "}");
     List<Recipe> recipes = recipeManager.getRecipe(id);
-    return null;
+    return GetRecipeResponse.of(recipes);
   }
 
 

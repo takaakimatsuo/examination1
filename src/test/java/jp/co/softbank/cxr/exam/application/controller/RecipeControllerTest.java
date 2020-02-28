@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -88,18 +89,16 @@ class RecipeControllerTest {
   @Test
   void test_指定したidのレシピが存在せずGETとするとエラーが返る() throws Exception {
 
-    ApplicationException expectedResponse = ApplicationException.builder()
-                                                                .errorDetail(RECIPE_NOT_FOUND)
-                                                                .build();
+    // mock
+    when(recipeManager.getRecipe(10)).thenThrow(new ApplicationException(RECIPE_NOT_FOUND));
+
+    String expectedResponse = objectMapper.writeValueAsString(RECIPE_NOT_FOUND);
+    System.out.println("expecting..... " + expectedResponse);
 
     // execute & assert
-    String responseJsonString = mockMvc.perform(get("/recipes/10"))
+    mockMvc.perform(get("/recipes/10"))
           .andExpect(status().isNotFound())
-          .andReturn().getResponse().getContentAsString();
-
-    ApplicationException actualResponse = objectMapper.readValue(responseJsonString, ApplicationException.class);
-    assertThat(actualResponse).isEqualTo(expectedResponse);
-
+          .andExpect(content().json(expectedResponse));
 
     verify(recipeManager).getRecipe(10);
   }
@@ -119,7 +118,7 @@ class RecipeControllerTest {
                                            .makingTime("45分")
                                            .serves("4人")
                                            .ingredients("玉ねぎ,肉,スパイス")
-                                           .cost(1000)
+                                           .cost("1000")
                                            .build());
   }
 

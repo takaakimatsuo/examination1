@@ -1,6 +1,9 @@
 package jp.co.softbank.cxr.exam.common;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.experimental.NonFinal;
 
 
 /**
@@ -8,7 +11,9 @@ import lombok.Builder;
  *
  */
 
+@Getter
 @Builder
+@NonFinal
 public class ApplicationException extends RuntimeException {
 
   private final ErrorDetail errorDetail;

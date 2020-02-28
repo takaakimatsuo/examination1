@@ -1,5 +1,6 @@
 package jp.co.softbank.cxr.exam.domain.model;
 
+import jp.co.softbank.cxr.exam.application.controller.payload.RecipePayload;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,5 +24,5 @@ public class Recipe {
 
   private String ingredients;
 
-  private Integer cost;
+  private String cost;
 }
