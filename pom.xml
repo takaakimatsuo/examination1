@@ -13,50 +13,35 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
+
   <name>examination1</name>
   <url>http://maven.apache.org</url>
+
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <maven.compiler.source>${java.version}</maven.compiler.source>
-    <junit.version>5.5.2</junit.version>
     <assertj.version>3.11.1</assertj.version>
     <rest-assured.version>4.1.2</rest-assured.version>
     <commons-validator.version>1.6</commons-validator.version>
     <commons-io.version>2.6</commons-io.version>
+    <jupiter.version>5.3.2</jupiter.version>
+    <h2database.version>1.4.199</h2database.version>
+    <dbsetup.version>2.1.0</dbsetup.version>
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-
-
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>commons-validator</groupId>
       <artifactId>commons-validator</artifactId>
@@ -93,5 +78,101 @@
       <version>${rest-assured.version}</version>
       <scope>test</scope>
     </dependency>
+
+
+    <!-- ============================ -->
+    <!-- Spring framework dependency  -->
+    <!-- ============================ -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+
+    <!-- ============================ -->
+    <!--   Junit related dependency   -->
+    <!-- ============================ -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${jupiter.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>${jupiter.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+      <version>${jupiter.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- ============================ -->
+    <!--    Dao related dependency    -->
+    <!-- ============================ -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jdbc</artifactId>
+    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.springframework.boot</groupId>-->
+<!--      <artifactId>spring-boot-starter-data-jpa</artifactId>-->
+<!--    </dependency>-->
+
+    <!-- ============================ -->
+    <!--  Runtime Logging dependency  -->
+    <!-- ============================ -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+
+    <!-- ============================ -->
+    <!--   Psql Database dependency   -->
+    <!-- ============================ -->
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!-- ============================ -->
+    <!--   Mock Database dependency   -->
+    <!-- ============================ -->
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>${h2database.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.ninja-squad</groupId>
+      <artifactId>DbSetup</artifactId>
+      <version>${dbsetup.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
+
 </project>
+
+

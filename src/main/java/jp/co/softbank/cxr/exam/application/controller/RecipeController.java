@@ -12,12 +12,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 public class RecipeController {
-  /**
-   * Entry エンドポイント.
-   */
-  @GetMapping(path = "/")
-  @ResponseStatus(HttpStatus.OK)
-  public void entry() {
-  }
 
 }
