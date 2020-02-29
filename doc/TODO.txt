@@ -1,12 +1,12 @@
 
 1. 環境設定
-        a. herokuデータベースへの接続確認等
+        a. herokuデータベースへの接続確認等　×
 
 2. POST /recipes -> レシピを作成
-        a. Controllerの単体テスト (各タスクはJavadoc記述も含む)
-        b. Controllerの実装
-        c. Domainの単体テスト
-        d. Domainの実装
+        a. Controllerの単体テスト (各タスクはJavadoc記述も含む) ×
+        b. Controllerの実装　×
+        c. Domainの単体テスト　×
+        d. Domainの実装　×
         e. Integrationの単体テスト
         f. Integrationの実装
 
