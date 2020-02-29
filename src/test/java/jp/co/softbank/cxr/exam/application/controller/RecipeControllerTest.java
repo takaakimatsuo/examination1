@@ -16,7 +16,7 @@ import jp.co.softbank.cxr.exam.application.payload.GetRecipeResponse;
 import jp.co.softbank.cxr.exam.application.payload.RecipePayload;
 import jp.co.softbank.cxr.exam.common.ApplicationException;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
-import jp.co.softbank.cxr.exam.domain.RecipeManager;
+import jp.co.softbank.cxr.exam.domain.service.RecipeManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

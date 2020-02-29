@@ -1,4 +1,4 @@
-package jp.co.softbank.cxr.exam.domain;
+package jp.co.softbank.cxr.exam.domain.service;
 
 import static jp.co.softbank.cxr.exam.common.ErrorDetails.RECIPE_NOT_FOUND;
 import static jp.co.softbank.cxr.exam.common.Utils.toSqlTimestamp;
@@ -17,9 +17,9 @@ import jp.co.softbank.cxr.exam.integration.repository.RecipeRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
@@ -32,7 +32,7 @@ class RecipeManagerImplTest {
   @InjectMocks
   RecipeManagerImpl recipeManager;
 
-  @MockBean
+  @Mock
   RecipeRepository recipeRepository;
 
   @Test

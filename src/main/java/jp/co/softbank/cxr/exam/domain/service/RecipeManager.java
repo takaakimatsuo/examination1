@@ -1,4 +1,4 @@
-package jp.co.softbank.cxr.exam.domain;
+package jp.co.softbank.cxr.exam.domain.service;
 
 import java.util.List;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;

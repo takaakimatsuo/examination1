@@ -19,6 +19,13 @@ public class RecipeEntityMapper {
    * @return レシピのドメインモデル
    */
   public static Recipe fromEntity(RecipeEntity recipeEntity) {
-    return null;
+    return Recipe.builder()
+      .id(recipeEntity.getId())
+      .title(recipeEntity.getTitle())
+      .serves(recipeEntity.getServes())
+      .ingredients(recipeEntity.getIngredients())
+      .makingTime(recipeEntity.getMakingTime())
+      .cost(recipeEntity.getCost().toString())
+      .build();
   }
 }
