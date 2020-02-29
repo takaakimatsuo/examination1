@@ -42,7 +42,6 @@ public class RecipeController {
   @ResponseStatus(HttpStatus.OK)
   public GetRecipeResponse getRecipe(@PathVariable("id") Integer id) {
     log.info("Request sent to /recipes/{}", id);
-    System.out.println("Request sent to /recipes/{" + id + "}");
     List<Recipe> recipes = recipeManager.getRecipe(id);
     return GetRecipeResponse.of(recipes);
   }

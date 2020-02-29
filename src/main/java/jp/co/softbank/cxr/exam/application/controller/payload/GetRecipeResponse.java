@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import lombok.Builder;
@@ -13,7 +14,7 @@ import lombok.Data;
 
 
 /**
- * 指定した ID で取得できたレシピのレスポンスを表す.
+ * 指定した ID で取得したレシピのレスポンス.
  *
  */
 
@@ -36,11 +37,7 @@ public class GetRecipeResponse {
    */
   public static GetRecipeResponse of(List<Recipe> recipes) {
     GetRecipeResponseBuilder response = GetRecipeResponse.builder().message(GET_RECIPE_RESPONSE);
-    List<RecipePayload> recipePayloads = new ArrayList<>();
-    for (Recipe recipe : recipes) {
-      recipePayloads.add(RecipePayload.of(recipe));
-    }
-    return response.recipePayloadList(recipePayloads)
-                   .build();
+    response.recipePayloadList(recipes.stream().map(RecipePayload::of).collect(Collectors.toList()));
+    return response.build();
   }
 }

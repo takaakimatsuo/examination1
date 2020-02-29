@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 
 /**
- * {@link RecipeManager} の実装クラスです.
+ * {@link RecipeManager} の実装クラス.
  */
 @NoArgsConstructor
 @Component

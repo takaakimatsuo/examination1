@@ -18,6 +18,7 @@ import jp.co.softbank.cxr.exam.common.ApplicationException;
 import jp.co.softbank.cxr.exam.common.ErrorDetail;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import jp.co.softbank.cxr.exam.domain.service.RecipeManager;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -54,6 +55,7 @@ class RecipeControllerTest {
 
   @Test
   void test_entryのエンドポイントにリクエストを投げると200レスポンスが返される() throws Exception {
+    // execute and assert
     mockMvc.perform(get("/"))
       .andExpect(status().isOk());
   }
@@ -61,8 +63,10 @@ class RecipeControllerTest {
   @Test
   void test_指定したidを持つレシピが正常にGETリクエストで返される() throws Exception {
 
+    // mock domain method
     when(recipeManager.getRecipe(1)).thenReturn(generateSingleSampleRecipe());
 
+    // expected
     GetRecipeResponse expectedResponse = GetRecipeResponse.builder()
                                                          .message("Recipe details by id")
                                                          .recipePayloadList(Arrays.asList(RecipePayload.builder()
@@ -75,12 +79,10 @@ class RecipeControllerTest {
                                                                                                        .build()))
                                                          .build();
 
-
-
+    // execute, assert and verify
     String responseJsonString = mockMvc.perform(get("/recipes/1"))
         .andExpect(status().isOk())
         .andReturn().getResponse().getContentAsString();
-
     GetRecipeResponse actualResponse = objectMapper.readValue(responseJsonString, GetRecipeResponse.class);
     assertThat(actualResponse).isEqualTo(expectedResponse);
     verify(recipeManager).getRecipe(1);
@@ -89,17 +91,16 @@ class RecipeControllerTest {
   @Test
   void test_指定したidのレシピが存在せずGETとするとエラーが返る() throws Exception {
 
-    // mock
+    // mock domain method
     when(recipeManager.getRecipe(10)).thenThrow(new ApplicationException(RECIPE_NOT_FOUND));
 
+    // expected error response
     String expectedResponse = objectMapper.writeValueAsString(RECIPE_NOT_FOUND);
-    System.out.println("expecting..... " + expectedResponse);
 
-    // execute & assert
+    // execute, assert and verify
     mockMvc.perform(get("/recipes/10"))
           .andExpect(status().isNotFound())
           .andExpect(content().json(expectedResponse));
-
     verify(recipeManager).getRecipe(10);
   }
 
