@@ -8,7 +8,6 @@ public class ErrorDetails {
    * */
   public static final ErrorDetail RECIPE_NOT_FOUND
       = ErrorDetail.builder()
-                   .errorCode("0001")
                    .message("No Recipe found")
                    .build();
 }

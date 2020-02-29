@@ -8,9 +8,6 @@ import lombok.Value;
 @Builder
 public class ErrorDetail {
 
-  @JsonProperty("error_code")
-  private String errorCode;
-
   @JsonProperty("message")
   private String message;
 

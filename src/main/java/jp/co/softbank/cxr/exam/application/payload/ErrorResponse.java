@@ -22,7 +22,5 @@ public class ErrorResponse {
   @JsonProperty("message")
   private String message;
 
-  @JsonProperty("error_code")
-  private String errorCode;
 
 }

@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   private ResponseEntity<ErrorResponse> handleApplicationException(ApplicationException e) {
 
-    ErrorResponse errorResponse = new ErrorResponse(e.getErrorDetail().getMessage(), e.getErrorDetail().getErrorCode());
+    ErrorResponse errorResponse = new ErrorResponse(e.getErrorDetail().getMessage());
     if (e.getErrorDetail().equals(RECIPE_NOT_FOUND)) {
       return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
