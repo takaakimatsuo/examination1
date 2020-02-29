@@ -1,7 +1,7 @@
 package jp.co.softbank.cxr.exam.application.controller;
 
 import java.util.List;
-import jp.co.softbank.cxr.exam.application.controller.payload.GetRecipeResponse;
+import jp.co.softbank.cxr.exam.application.payload.GetRecipeResponse;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import jp.co.softbank.cxr.exam.domain.service.RecipeManager;
 import lombok.RequiredArgsConstructor;

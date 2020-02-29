@@ -23,7 +23,7 @@ class RestTest {
   
   @BeforeEach
   void setupAll() {
-    RestAssured.baseURI = "write URL here!!";
+    RestAssured.baseURI = "https://examination1.herokuapp.com/";
   }
   
   

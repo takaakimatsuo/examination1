@@ -1,4 +1,4 @@
-package jp.co.softbank.cxr.exam.application.controller.payload;
+package jp.co.softbank.cxr.exam.application.payload;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;

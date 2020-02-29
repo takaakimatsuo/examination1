@@ -1,10 +1,7 @@
-package jp.co.softbank.cxr.exam.application.controller.payload;
+package jp.co.softbank.cxr.exam.application.payload;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
