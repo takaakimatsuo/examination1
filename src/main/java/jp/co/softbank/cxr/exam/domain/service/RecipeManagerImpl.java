@@ -1,7 +1,5 @@
 package jp.co.softbank.cxr.exam.domain.service;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import jp.co.softbank.cxr.exam.common.ApplicationException;
@@ -32,11 +30,11 @@ public class RecipeManagerImpl implements RecipeManager {
    */
   @Override
   public List<Recipe> getRecipe(int id) {
-    RecipeEntity recipeEntity = recipeRepository.get(id);
+    List<RecipeEntity> recipeEntity = recipeRepository.get(id);
 
     if (isNull(recipeEntity)) {
       throw new ApplicationException(RECIPE_NOT_FOUND);
     }
-    return Collections.singletonList(RecipeEntityMapper.fromEntity(recipeEntity));
+    return RecipeEntityMapper.fromEntities(recipeEntity);
   }
 }

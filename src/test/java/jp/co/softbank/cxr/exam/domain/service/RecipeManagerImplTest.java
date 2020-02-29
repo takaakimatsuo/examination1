@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.List;
-
 import jp.co.softbank.cxr.exam.common.ApplicationException;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import jp.co.softbank.cxr.exam.integration.entity.RecipeEntity;
@@ -37,7 +36,7 @@ class RecipeManagerImplTest {
 
   @Test
   void test_指定されたIDでレシピが正常に取得できる場合() {
-    when(recipeRepository.get(1)).thenReturn(RecipeEntity.builder()
+    when(recipeRepository.get(1)).thenReturn(Arrays.asList(RecipeEntity.builder()
                                                          .id(1)
                                                          .title("チキンカレー")
                                                          .makingTime("45分")
@@ -46,7 +45,7 @@ class RecipeManagerImplTest {
                                                          .cost(1000)
                                                          .createdAt(toSqlTimestamp("2020-02-23 14:00:00"))
                                                          .updatedAt(toSqlTimestamp("2020-02-23 14:00:00"))
-                                                         .build());
+                                                         .build()));
 
     List<Recipe> expected = Arrays.asList(Recipe.builder()
                                                 .id(1)
