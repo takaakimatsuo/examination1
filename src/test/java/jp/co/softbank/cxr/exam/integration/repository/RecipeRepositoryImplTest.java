@@ -1,8 +1,17 @@
 package jp.co.softbank.cxr.exam.integration.repository;
 
+import static com.ninja_squad.dbsetup.Operations.deleteAllFrom;
+import static com.ninja_squad.dbsetup.Operations.insertInto;
+import static com.ninja_squad.dbsetup.Operations.sequenceOf;
+import static jp.co.softbank.cxr.exam.common.Utils.toSqlTimestamp;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.ninja_squad.dbsetup.DbSetup;
 import com.ninja_squad.dbsetup.destination.DriverManagerDestination;
 import com.ninja_squad.dbsetup.operation.Operation;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import jp.co.softbank.cxr.exam.integration.entity.RecipeEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,13 +21,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
-import static com.ninja_squad.dbsetup.Operations.*;
-import static jp.co.softbank.cxr.exam.common.Utils.toSqlTimestamp;
-import static org.assertj.core.api.Assertions.assertThat;
 
 
 @ExtendWith(SpringExtension.class)
@@ -90,6 +93,43 @@ class RecipeRepositoryImplTest {
   void test_指定したidのレシピが存在しない場合の取得() {
     List<RecipeEntity> expected = Collections.emptyList();
     List<RecipeEntity> actual = recipeRepository.get(10);
+    assertThat(actual).isEqualTo(expected);
+  }
+
+  @Test
+  void test_全てのレシピを正常に取得 () {
+    // expected
+    List<RecipeEntity> expected = Arrays.asList(RecipeEntity.builder()
+                                                            .id(1)
+                                                            .title("チキンカレー")
+                                                            .makingTime("45分")
+                                                            .serves("4人")
+                                                            .ingredients("玉ねぎ,肉,スパイス")
+                                                            .cost(1000)
+                                                            .createdAt(toSqlTimestamp("2016-01-10 12:10:12"))
+                                                            .updatedAt(toSqlTimestamp("2016-01-11 12:10:12"))
+                                                            .build(),
+                                                RecipeEntity.builder()
+                                                            .id(2)
+                                                            .title("オムライス")
+                                                            .makingTime("30分")
+                                                            .serves("2人")
+                                                            .ingredients("玉ねぎ,卵,スパイス,醤油")
+                                                            .cost(700)
+                                                            .createdAt(toSqlTimestamp("2016-01-10 12:10:12"))
+                                                            .updatedAt(toSqlTimestamp("2016-01-11 12:10:12"))
+                                                            .build());
+
+    // execute
+    List<RecipeEntity> actual = recipeRepository.getAll();
+    // assert
+    assertThat(actual).isEqualTo(expected);
+  }
+
+  @Test
+  void test_レシピが存在しない場合の取得() {
+    List<RecipeEntity> expected = Collections.emptyList();
+    List<RecipeEntity> actual = recipeRepository.getAll();
     assertThat(actual).isEqualTo(expected);
   }
 }
