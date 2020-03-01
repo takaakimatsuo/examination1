@@ -4,24 +4,27 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ninja_squad.dbsetup.DbSetup;
 import com.ninja_squad.dbsetup.destination.DriverManagerDestination;
 import com.ninja_squad.dbsetup.operation.Operation;
-import jp.co.softbank.cxr.exam.application.payload.GetRecipeResponse;
-import jp.co.softbank.cxr.exam.application.payload.GetRecipesResponse;
-import jp.co.softbank.cxr.exam.application.payload.RecipePayload;
+import jp.co.softbank.cxr.exam.application.payload.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
+import java.util.Collections;
+
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.ninja_squad.dbsetup.Operations.*;
 import static jp.co.softbank.cxr.exam.common.ErrorDetails.RECIPE_NOT_FOUND;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -135,6 +138,45 @@ class RecipeApiTest {
     String expectedJsonString = objectMapper.writeValueAsString(expectedResponse);
 
     assertThat(responseJsonString).isEqualTo(expectedJsonString);
+  }
+
+  @Test
+  void test_正常に新しいレシピの登録を行う() throws Exception {
+    // expected
+    CreateRecipeResponse expectedResponse = CreateRecipeResponse.builder()
+                                                                .message("Recipe successfully created!")
+                                                                .recipePayloadList(Collections.singletonList(RecipePayload.builder()
+                                                                                                                          .title("カレー")
+                                                                                                                          .makingTime("45分")
+                                                                                                                          .serves("4人")
+                                                                                                                          .ingredients("玉ねぎ,肉,スパイス,カレールー")
+                                                                                                                          .cost("1000")
+                                                                                                                          .build()))
+                                                                .build();
+
+    CreateRecipeRequest createRecipeRequest = CreateRecipeRequest.builder()
+                                                              .title("カレー")
+                                                              .makingTime("45分")
+                                                              .serves("4人")
+                                                              .ingredients("玉ねぎ,肉,スパイス,カレールー")
+                                                              .cost("1000")
+                                                              .build();
+
+
+    // execute & assert
+    String responseJsonString = mockMvc.perform(post("/recipes")
+                                       .contentType(MediaType.APPLICATION_JSON)
+                                       .content(objectMapper.writeValueAsBytes(createRecipeRequest)))
+                                       .andExpect(status().isCreated())
+                                       .andReturn().getResponse().getContentAsString();
+
+    CreateRecipeResponse actualResponse = objectMapper.readValue(responseJsonString, CreateRecipeResponse.class);
+    assertThat(actualResponse.getRecipePayloadList().get(0).getTitle()).isEqualTo(expectedResponse.getRecipePayloadList().get(0).getTitle());
+    assertThat(actualResponse.getRecipePayloadList().get(0).getIngredients()).isEqualTo(expectedResponse.getRecipePayloadList().get(0).getIngredients());
+    assertThat(actualResponse.getRecipePayloadList().get(0).getMakingTime()).isEqualTo(expectedResponse.getRecipePayloadList().get(0).getMakingTime());
+    assertThat(actualResponse.getRecipePayloadList().get(0).getServes()).isEqualTo(expectedResponse.getRecipePayloadList().get(0).getServes());
+    assertThat(actualResponse.getRecipePayloadList().get(0).getCost()).isEqualTo(expectedResponse.getRecipePayloadList().get(0).getCost());
+
   }
 
 

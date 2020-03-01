@@ -191,16 +191,16 @@ class RecipeControllerTest {
 
     // expected
     CreateRecipeResponse expectedResponse = CreateRecipeResponse.builder()
-        .message("Recipe successfully created!")
-        .recipePayloadList(Collections.singletonList(RecipePayload.builder()
-                                                                  .id(1)
-                                                                  .title("チキンカレー")
-                                                                  .makingTime("45分")
-                                                                  .serves("4人")
-                                                                  .ingredients("玉ねぎ,肉,スパイス")
-                                                                  .cost("1000")
-                                                                  .build()
-      )).build();
+                                                                .message("Recipe successfully created!")
+                                                                .recipePayloadList(Collections.singletonList(RecipePayload.builder()
+                                                                                                                          .id(1)
+                                                                                                                          .title("チキンカレー")
+                                                                                                                          .makingTime("45分")
+                                                                                                                          .serves("4人")
+                                                                                                                          .ingredients("玉ねぎ,肉,スパイス")
+                                                                                                                          .cost("1000")
+                                                                                                                          .build()
+                                                              )).build();
 
     // execute & assert
     String responseJsonString = mockMvc.perform(post("/recipes")
