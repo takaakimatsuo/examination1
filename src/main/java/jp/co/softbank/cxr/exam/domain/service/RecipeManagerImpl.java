@@ -43,6 +43,11 @@ public class RecipeManagerImpl implements RecipeManager {
    */
   @Override
   public List<Recipe> getRecipes() {
-    return null;
+    List<RecipeEntity> recipeEntity = recipeRepository.getAll();
+
+    if (isEmpty(recipeEntity)) {
+      throw new ApplicationException(RECIPE_NOT_FOUND);
+    }
+    return RecipeEntityMapper.fromEntities(recipeEntity);
   }
 }
