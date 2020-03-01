@@ -17,6 +17,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class RecipeRepositoryImpl implements RecipeRepository {
+
+  private static final String SELECT_ALL_FROM_RECIPES = "FROM RecipeEntity";
+
   @Autowired
   EntityManager entityManager;
 
@@ -47,7 +50,8 @@ public class RecipeRepositoryImpl implements RecipeRepository {
    */
   @Override
   public List<RecipeEntity> getAll() {
-    return null;
+    List<RecipeEntity> recipeEntity = entityManager.createQuery(SELECT_ALL_FROM_RECIPES, RecipeEntity.class).getResultList();
+    return recipeEntity;
   }
 
 }

@@ -116,8 +116,8 @@ class RecipeRepositoryImplTest {
                                                             .serves("2人")
                                                             .ingredients("玉ねぎ,卵,スパイス,醤油")
                                                             .cost(700)
-                                                            .createdAt(toSqlTimestamp("2016-01-10 12:10:12"))
-                                                            .updatedAt(toSqlTimestamp("2016-01-11 12:10:12"))
+                                                            .createdAt(toSqlTimestamp("2016-02-10 12:10:12"))
+                                                            .updatedAt(toSqlTimestamp("2016-02-11 12:10:12"))
                                                             .build());
 
     // execute
@@ -128,6 +128,10 @@ class RecipeRepositoryImplTest {
 
   @Test
   void test_レシピが存在しない場合の取得() {
+    Operation operation = sequenceOf(DELETE_ALL);
+    DbSetup dbSetup = new DbSetup(new DriverManagerDestination("jdbc:h2:mem:test;MODE=MSSQLServer;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false", "sa", "sa"), operation);
+    dbSetup.launch();
+
     List<RecipeEntity> expected = Collections.emptyList();
     List<RecipeEntity> actual = recipeRepository.getAll();
     assertThat(actual).isEqualTo(expected);
