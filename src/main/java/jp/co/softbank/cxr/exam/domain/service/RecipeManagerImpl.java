@@ -37,4 +37,12 @@ public class RecipeManagerImpl implements RecipeManager {
     }
     return RecipeEntityMapper.fromEntities(recipeEntity);
   }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<Recipe> getRecipes() {
+    return null;
+  }
 }

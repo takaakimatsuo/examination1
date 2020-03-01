@@ -2,6 +2,7 @@ package jp.co.softbank.cxr.exam.application.controller;
 
 import java.util.List;
 import jp.co.softbank.cxr.exam.application.payload.GetRecipeResponse;
+import jp.co.softbank.cxr.exam.application.payload.GetRecipesResponse;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import jp.co.softbank.cxr.exam.domain.service.RecipeManager;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +45,17 @@ public class RecipeController {
     log.info("Request sent to /recipes/{}", id);
     List<Recipe> recipes = recipeManager.getRecipe(id);
     return GetRecipeResponse.of(recipes);
+  }
+
+  /**
+   * 全てのレシピを get するためのエンドポイント.
+   *
+   */
+  @GetMapping(path = "/recipes")
+  @ResponseStatus(HttpStatus.OK)
+  public GetRecipesResponse getRecipes() {
+    log.info("Request sent to /recipes");
+    return null;
   }
 
 

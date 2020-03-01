@@ -12,4 +12,11 @@ public interface RecipeManager {
    * @return 実際に取得されたレシピ
    */
   List<Recipe> getRecipe(int id);
+
+  /**
+   * 全てのレシピを取得.
+   *
+   * @return 実際に取得されたレシピ
+   */
+  List<Recipe> getRecipes();
 }

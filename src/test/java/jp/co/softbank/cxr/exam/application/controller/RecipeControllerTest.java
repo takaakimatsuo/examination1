@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import jp.co.softbank.cxr.exam.application.payload.GetRecipeResponse;
+import jp.co.softbank.cxr.exam.application.payload.GetRecipesResponse;
 import jp.co.softbank.cxr.exam.application.payload.RecipePayload;
 import jp.co.softbank.cxr.exam.common.ApplicationException;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
@@ -57,6 +58,19 @@ class RecipeControllerTest {
     mockMvc.perform(get("/"))
       .andExpect(status().isOk());
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   @Test
   void test_指定したidを持つレシピが正常にGETリクエストで返される() throws Exception {
@@ -105,10 +119,95 @@ class RecipeControllerTest {
 
 
 
-  private void setUpMockGetRecipe() {
-    when(recipeManager.getRecipe(1)).thenReturn(generateSingleSampleRecipe());
-    when(recipeManager.getRecipe(10)).thenThrow(new ApplicationException(RECIPE_NOT_FOUND));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  @Test
+  void test_全てのレシピが正常にGETリクエストで返される() throws Exception {
+
+    // mock domain method
+    when(recipeManager.getRecipes()).thenReturn(generateSampleRecipes());
+
+    // expected
+    GetRecipesResponse expectedResponse = GetRecipesResponse.builder()
+        .recipePayloadList(Arrays.asList(RecipePayload.builder()
+                                                      .id(1)
+                                                      .title("チキンカレー")
+                                                      .makingTime("45分")
+                                                      .serves("4人")
+                                                      .ingredients("玉ねぎ,肉,スパイス")
+                                                      .cost("1000")
+                                                      .build(),
+                                         RecipePayload.builder()
+                                                      .id(2)
+                                                      .title("オムライス")
+                                                      .makingTime("30分")
+                                                      .serves("2人")
+                                                      .ingredients("玉ねぎ,卵,スパイス,醤油")
+                                                      .cost("700")
+                                                      .build()))
+        .build();
+
+    // execute, assert and verify
+    String responseJsonString = mockMvc.perform(get("/recipes"))
+        .andExpect(status().isOk())
+        .andReturn().getResponse().getContentAsString();
+    GetRecipeResponse actualResponse = objectMapper.readValue(responseJsonString, GetRecipeResponse.class);
+    assertThat(actualResponse).isEqualTo(expectedResponse);
+    verify(recipeManager).getRecipes();
   }
+
+
+  @Test
+  void test_レシピが存在せずGETとするとエラーが返る() throws Exception {
+    // mock domain method
+    when(recipeManager.getRecipes()).thenThrow(new ApplicationException(RECIPE_NOT_FOUND));
+
+    // expected error response
+    String expectedResponse = objectMapper.writeValueAsString(RECIPE_NOT_FOUND);
+
+    // execute, assert and verify
+    mockMvc.perform(get("/recipes"))
+      .andExpect(status().isNotFound())
+      .andExpect(content().json(expectedResponse));
+    verify(recipeManager).getRecipes();
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   private List<Recipe> generateSingleSampleRecipe() {
     return Collections.singletonList(Recipe.builder()
@@ -119,6 +218,26 @@ class RecipeControllerTest {
                                            .ingredients("玉ねぎ,肉,スパイス")
                                            .cost("1000")
                                            .build());
+  }
+
+  private List<Recipe> generateSampleRecipes() {
+    return Arrays.asList(Recipe.builder()
+                               .id(1)
+                               .title("チキンカレー")
+                               .makingTime("45分")
+                               .serves("4人")
+                               .ingredients("玉ねぎ,肉,スパイス")
+                               .cost("1000")
+                               .build(),
+                         Recipe.builder()
+                               .id(1)
+                               .title("オムライス")
+                               .makingTime("30分")
+                               .serves("2人")
+                               .ingredients("玉ねぎ,卵,スパイス,醤油")
+                               .cost("700")
+                               .build());
+
   }
 
 }
