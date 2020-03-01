@@ -161,17 +161,4 @@ class RecipeManagerImplTest {
 
   }
 
-  @Test
-  void test_不正なレシピ登録がに正常にエラーを返す場合() {
-    // execute, assert and verify
-    InvalidUserInputException actual = assertThrows(InvalidUserInputException.class, () -> recipeManager.createRecipe(Recipe.builder()
-                                                                                                                  .title("チキンカレー")
-                                                                                                                  .makingTime("45分")
-                                                                                                                  .serves("4人")
-                                                                                                                  .ingredients("玉ねぎ,肉,スパイス")
-                                                                                                                  .cost("あいうえお")
-                                                                                                                  .build()));
-    assertThat(actual.getErrorDetail()).isEqualTo(INVALID_RECIPE);
-
-  }
 }

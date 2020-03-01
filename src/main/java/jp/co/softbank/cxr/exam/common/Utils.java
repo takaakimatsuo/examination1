@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import static jp.co.softbank.cxr.exam.common.ErrorDetailsRequired.INVALID_RECIPE;
+
 public class Utils {
 
   /**
@@ -15,5 +17,28 @@ public class Utils {
   public static Timestamp toSqlTimestamp(String dateTime) {
     return Timestamp.valueOf(LocalDateTime.parse(dateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
   }
+
+  /**
+   * 文字列が数字に変換可能かチェック.
+   *
+   * @param cost レシピのコスト
+   */
+  public static void resolveCost(String cost) {
+    try {
+      Integer.parseInt(cost);
+    } catch (NumberFormatException e) {
+      throw new InvalidUserInputException(INVALID_RECIPE);
+    }
+  }
+
+  /**
+   * 現在の日時を返す.
+   *
+   * @return 現在の日時
+   */
+  public static LocalDateTime getCurrentTime() {
+    return LocalDateTime.now();
+  }
+
 
 }

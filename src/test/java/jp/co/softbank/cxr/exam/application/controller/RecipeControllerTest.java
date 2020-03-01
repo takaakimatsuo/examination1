@@ -238,6 +238,29 @@ class RecipeControllerTest {
       .andExpect(content().json(expectedResponse));;
   }
 
+  @Test
+  void test_costに文字が混じっているレシピをPOSTリクエストするとエラーが返される() throws Exception {
+    // mock domain method
+    CreateRecipeRequest recipe = CreateRecipeRequest.builder()
+      .title("チキンカレー")
+      .serves("2人")
+      .makingTime("45分")
+      .ingredients("玉ねぎ,肉,スパイス")
+      .cost("あいうえお")
+      .build();
+
+    // expected error response
+    String expectedResponse = objectMapper.writeValueAsString(INVALID_RECIPE);
+
+
+    // execute, assert and verify
+    mockMvc.perform(post("/recipes")
+      .contentType(MediaType.APPLICATION_JSON)
+      .content(objectMapper.writeValueAsBytes(recipe)))
+      .andExpect(status().isBadRequest())
+      .andExpect(content().json(expectedResponse));;
+  }
+
 
 
 

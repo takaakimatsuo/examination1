@@ -6,6 +6,9 @@ import jp.co.softbank.cxr.exam.integration.entity.RecipeEntity;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jp.co.softbank.cxr.exam.common.Utils.getCurrentTime;
+import static jp.co.softbank.cxr.exam.common.Utils.toSqlTimestamp;
+
 /**
  * レシピのドメインモデルとエンティティを相互に変換を行うマッパー.
  *
@@ -44,5 +47,24 @@ public class RecipeEntityMapper {
       recipes.add(RecipeEntityMapper.fromEntity(recipeEntity));
     }
     return recipes;
+  }
+
+  /**
+   * レシピのドメインモデルからレシピエンティティからに変換.
+   *
+   * @param recipe レシピのドメインモデル
+   * @return レシピのエンティティ
+   */
+  public static RecipeEntity toEntity(Recipe recipe) {
+    return RecipeEntity.builder()
+      .id(recipe.getId())
+      .title(recipe.getTitle())
+      .serves(recipe.getServes())
+      .ingredients(recipe.getIngredients())
+      .makingTime(recipe.getMakingTime())
+      .cost(Integer.parseInt(recipe.getCost()))
+      .updatedAt(toSqlTimestamp(getCurrentTime().toString()))
+      .createdAt(toSqlTimestamp(getCurrentTime().toString()))
+      .build();
   }
 }

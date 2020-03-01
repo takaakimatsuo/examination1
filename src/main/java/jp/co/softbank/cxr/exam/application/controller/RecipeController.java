@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 import static jp.co.softbank.cxr.exam.common.ErrorDetailsRequired.INVALID_RECIPE;
+import static jp.co.softbank.cxr.exam.common.Utils.resolveCost;
 
 
 /**
@@ -75,6 +76,7 @@ public class RecipeController {
     if (bindingResult.hasErrors()) {
       throw new InvalidUserInputException(INVALID_RECIPE);
     }
+    resolveCost(recipe.getCost());
     List<Recipe> registeredRecipe = recipeManager.createRecipe(recipe.toModel());
 
     return CreateRecipeResponse.of(registeredRecipe);

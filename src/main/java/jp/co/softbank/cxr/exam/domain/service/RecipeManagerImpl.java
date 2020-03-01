@@ -56,7 +56,8 @@ public class RecipeManagerImpl implements RecipeManager {
    */
   @Override
   public List<Recipe> createRecipe(Recipe recipe) {
-    return null;
+    List<RecipeEntity> recipeEntity = recipeRepository.create(recipe);
+    return RecipeEntityMapper.fromEntities(recipeEntity);
   }
 
 }
