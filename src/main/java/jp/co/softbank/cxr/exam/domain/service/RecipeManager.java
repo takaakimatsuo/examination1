@@ -27,4 +27,12 @@ public interface RecipeManager {
    * @return 実際に登録されたレシピ
    */
   List<Recipe> createRecipe(Recipe recipe);
+
+  /**
+   * 既存のレシピの削除.
+   *
+   * @param id 削除したいレシピのID
+   * @return 実際に削除されたレシピ
+   */
+  List<Recipe> deleteRecipe(int id);
 }

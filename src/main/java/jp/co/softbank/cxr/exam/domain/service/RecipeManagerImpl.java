@@ -60,4 +60,11 @@ public class RecipeManagerImpl implements RecipeManager {
     return RecipeEntityMapper.fromEntities(recipeEntity);
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   */
+  public List<Recipe> deleteRecipe(int id) {
+    return null;
+  }
 }

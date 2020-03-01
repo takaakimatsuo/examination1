@@ -5,6 +5,7 @@ import static jp.co.softbank.cxr.exam.common.ErrorDetailsRequired.INVALID_RECIPE
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -15,9 +16,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import jp.co.softbank.cxr.exam.application.payload.*;
+import jp.co.softbank.cxr.exam.application.payload.CreateRecipeRequest;
+import jp.co.softbank.cxr.exam.application.payload.CreateRecipeResponse;
+import jp.co.softbank.cxr.exam.application.payload.GetRecipeResponse;
+import jp.co.softbank.cxr.exam.application.payload.GetRecipesResponse;
+import jp.co.softbank.cxr.exam.application.payload.RecipePayload;
 import jp.co.softbank.cxr.exam.common.ApplicationException;
-import jp.co.softbank.cxr.exam.common.InvalidUserInputException;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import jp.co.softbank.cxr.exam.domain.service.RecipeManager;
 import org.junit.jupiter.api.DisplayName;
@@ -259,6 +263,35 @@ class RecipeControllerTest {
       .content(objectMapper.writeValueAsBytes(recipe)))
       .andExpect(status().isBadRequest())
       .andExpect(content().json(expectedResponse));;
+  }
+
+  @Test
+  void test_指定したidを持つレシピが正常にDELETEリクエストで削除() throws Exception {
+
+    // mock domain method
+    when(recipeManager.deleteRecipe(1)).thenReturn(generateSingleSampleRecipe());
+
+    // execute, assert and verify
+   mockMvc.perform(delete("/recipes/1"))
+      .andExpect(status().isNoContent())
+      .andReturn().getResponse().getContentAsString();
+    verify(recipeManager).deleteRecipe(1);
+  }
+
+  @Test
+  void test_指定したidを持つレシピが存在しない場合DELETEリクエストでエラーが返される() throws Exception {
+
+    // mock domain method
+    when(recipeManager.deleteRecipe(1)).thenThrow(new ApplicationException(RECIPE_NOT_FOUND));
+
+    // expected error response
+    String expectedResponse = objectMapper.writeValueAsString(RECIPE_NOT_FOUND);
+
+    // execute, assert and verify
+    mockMvc.perform(delete("/recipes/1"))
+      .andExpect(status().isNoContent())
+      .andExpect(content().json(expectedResponse));
+    verify(recipeManager).deleteRecipe(1);
   }
 
 
