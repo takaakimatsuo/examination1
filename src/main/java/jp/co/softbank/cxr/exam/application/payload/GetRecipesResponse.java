@@ -18,11 +18,21 @@ import java.util.stream.Collectors;
 @Builder
 public class GetRecipesResponse {
 
-  @JsonProperty(value = "recipe")
+  @JsonProperty(value = "recipes")
   private List<RecipePayload> recipePayloadList;
 
+  /**
+   * ドメインモデルからレスポンスに変換.
+   *
+   * @param recipes 変換対象のレシピのドメインモデルのリスト
+   * @return 指定したIDで取得できたレシピのレスポンス
+   */
   public static GetRecipesResponse of(List<Recipe> recipes) {
-    return null;
+    return GetRecipesResponse.builder()
+                             .recipePayloadList(recipes.stream()
+                                                       .map(RecipePayload::of)
+                                                       .collect(Collectors.toList()))
+                             .build();
   }
 
 }

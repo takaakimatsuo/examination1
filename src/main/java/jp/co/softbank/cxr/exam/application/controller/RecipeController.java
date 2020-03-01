@@ -55,7 +55,8 @@ public class RecipeController {
   @ResponseStatus(HttpStatus.OK)
   public GetRecipesResponse getRecipes() {
     log.info("Request sent to /recipes");
-    return null;
+    List<Recipe> recipes = recipeManager.getRecipes();
+    return GetRecipesResponse.of(recipes);
   }
 
 
