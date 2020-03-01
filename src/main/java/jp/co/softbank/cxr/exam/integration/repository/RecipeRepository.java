@@ -14,7 +14,14 @@ public interface RecipeRepository {
    * 指定された ID で特定のレシピをデータベースから取得.
    *
    * @param id レシピの ID
-   * @return レシピのエンティティ
+   * @return レシピのエンティティのリスト
    */
   List<RecipeEntity> get(Integer id);
+
+  /**
+   * 全レシピをデータベースから取得.
+   *
+   * @return レシピのエンティティのリスト
+   */
+  List<RecipeEntity> getAll();
 }

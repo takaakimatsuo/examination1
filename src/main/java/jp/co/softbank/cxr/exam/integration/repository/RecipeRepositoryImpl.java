@@ -42,4 +42,12 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     return result;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<RecipeEntity> getAll() {
+    return null;
+  }
+
 }

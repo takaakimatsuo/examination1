@@ -61,8 +61,6 @@ class RecipeManagerImplTest {
 
     assertThat(actual).isEqualTo(expected);
     verify(recipeRepository).get(1);
-
-
   }
 
   @Test
@@ -72,6 +70,63 @@ class RecipeManagerImplTest {
 
     // execute, assert and verify
     ApplicationException actual = assertThrows(ApplicationException.class, () -> recipeManager.getRecipe(10));
+    assertThat(actual.getErrorDetail()).isEqualTo(RECIPE_NOT_FOUND);
+  }
+
+
+  @Test
+  void test_全てのレシピが正常に取得できる場合() {
+    when(recipeRepository.getAll()).thenReturn(Arrays.asList(RecipeEntity.builder()
+                                                                         .id(1)
+                                                                         .title("チキンカレー")
+                                                                         .makingTime("45分")
+                                                                         .serves("4人")
+                                                                         .ingredients("玉ねぎ,肉,スパイス")
+                                                                         .cost(1000)
+                                                                         .createdAt(toSqlTimestamp("2020-02-23 14:00:00"))
+                                                                         .updatedAt(toSqlTimestamp("2020-02-23 14:00:00"))
+                                                                         .build(),
+                                                             RecipeEntity.builder()
+                                                                         .id(2)
+                                                                         .title("オムライス")
+                                                                         .makingTime("30分")
+                                                                         .serves("2人")
+                                                                         .ingredients("玉ねぎ,卵,スパイス,醤油")
+                                                                         .cost(700)
+                                                                         .createdAt(toSqlTimestamp("2020-02-23 14:00:00"))
+                                                                         .updatedAt(toSqlTimestamp("2020-02-23 14:00:00"))
+                                                                         .build()));
+
+    List<Recipe> expected = Arrays.asList(Recipe.builder()
+                                                .id(1)
+                                                .title("チキンカレー")
+                                                .makingTime("45分")
+                                                .serves("4人")
+                                                .ingredients("玉ねぎ,肉,スパイス")
+                                                .cost("1000")
+                                                .build(),
+                                          Recipe.builder()
+                                                .id(2)
+                                                .title("オムライス")
+                                                .makingTime("30分")
+                                                .serves("2人")
+                                                .ingredients("玉ねぎ,卵,スパイス,醤油")
+                                                .cost("700")
+                                                .build());
+
+    List<Recipe> actual = recipeManager.getRecipes();
+
+    assertThat(actual).isEqualTo(expected);
+    verify(recipeRepository).getAll();
+  }
+
+  @Test
+  void test_レシピが存在しない場合() {
+    // mock repository method
+    when(recipeRepository.getAll()).thenReturn(Collections.emptyList());
+
+    // execute, assert and verify
+    ApplicationException actual = assertThrows(ApplicationException.class, () -> recipeManager.getRecipes());
     assertThat(actual.getErrorDetail()).isEqualTo(RECIPE_NOT_FOUND);
   }
 }
