@@ -162,11 +162,13 @@ class RecipeControllerTest {
         .build();
 
     // execute, assert and verify
-    String responseJsonString = mockMvc.perform(get("/recipes"))
+    String actualJsonString = mockMvc.perform(get("/recipes"))
         .andExpect(status().isOk())
         .andReturn().getResponse().getContentAsString();
-    GetRecipeResponse actualResponse = objectMapper.readValue(responseJsonString, GetRecipeResponse.class);
-    assertThat(actualResponse).isEqualTo(expectedResponse);
+
+    String expectedJsonString = objectMapper.writeValueAsString(expectedResponse);
+
+    assertThat(actualJsonString).isEqualTo(expectedJsonString);
     verify(recipeManager).getRecipes();
   }
 
@@ -230,7 +232,7 @@ class RecipeControllerTest {
                                .cost("1000")
                                .build(),
                          Recipe.builder()
-                               .id(1)
+                               .id(2)
                                .title("オムライス")
                                .makingTime("30分")
                                .serves("2人")

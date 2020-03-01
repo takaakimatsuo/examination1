@@ -5,6 +5,7 @@ import com.ninja_squad.dbsetup.DbSetup;
 import com.ninja_squad.dbsetup.destination.DriverManagerDestination;
 import com.ninja_squad.dbsetup.operation.Operation;
 import jp.co.softbank.cxr.exam.application.payload.GetRecipeResponse;
+import jp.co.softbank.cxr.exam.application.payload.GetRecipesResponse;
 import jp.co.softbank.cxr.exam.application.payload.RecipePayload;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,7 +61,7 @@ class RecipeApiTest {
                                             "オムライス",
                                             "30分",
                                             "2人",
-                                            "玉ねぎ,卵,スパイス,醤油",
+                                            "玉ねぎ,肉,卵",
                                             700,
                                             "2016-02-10 12:10:12",
                                             "2016-02-11 12:10:12")
@@ -105,4 +106,36 @@ class RecipeApiTest {
       .andExpect(status().isNotFound())
       .andExpect(content().json(expectedResponse));
   }
+
+  @Test
+  void test_正常に全てのレシピの取得を行う() throws Exception {
+    // expected
+    GetRecipesResponse expectedResponse = GetRecipesResponse.builder()
+        .recipePayloadList(Arrays.asList(RecipePayload.builder().id(1)
+                                                                .title("チキンカレー")
+                                                                .makingTime("45分")
+                                                                .serves("4人")
+                                                                .ingredients("玉ねぎ,肉,スパイス")
+                                                                .cost("1000")
+                                                                .build(),
+                                         RecipePayload.builder().id(2)
+                                                                .title("オムライス")
+                                                                .makingTime("30分")
+                                                                .serves("2人")
+                                                                .ingredients("玉ねぎ,肉,卵")
+                                                                .cost("700")
+                                                                .build()))
+        .build();
+
+    // execute, assert
+    String responseJsonString = mockMvc.perform(get("/recipes"))
+        .andExpect(status().isOk())
+        .andReturn().getResponse().getContentAsString();
+
+    String expectedJsonString = objectMapper.writeValueAsString(expectedResponse);
+
+    assertThat(responseJsonString).isEqualTo(expectedJsonString);
+  }
+
+
 }
