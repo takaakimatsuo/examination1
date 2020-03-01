@@ -9,6 +9,7 @@
         d. Domainの実装　×
         e. Integrationの単体テスト
         f. Integrationの実装
+        g. ITテストの実装
 
 3. GET /recipes -> 全レシピ一覧を返す
         a. Controllerの単体テスト
@@ -17,6 +18,7 @@
         d. Domainの実装
         e. Integrationの単体テスト
         f. Integrationの実装
+        g. ITテストの実装
 
 4. GET /recipes/{id} -> 指定レシピ一つを返す
         a. Controllerの単体テスト
@@ -25,6 +27,7 @@
         d. Domainの実装
         e. Integrationの単体テスト
         f. Integrationの実装
+        g. ITテストの実装
 
 5. PATCH /recipes/{id} -> 指定レシピを更新
         a. Controllerの単体テスト
@@ -33,6 +36,7 @@
         d. Domainの実装
         e. Integrationの単体テスト
         f. Integrationの実装
+        g. ITテストの実装
 
 6. DELETE /recipes/{id} -> 指定レシピの削除
         a. Controllerの単体テスト
@@ -41,5 +45,6 @@
         d. Domainの実装
         e. Integrationの単体テスト
         f. Integrationの実装
+        g. ITテストの実装
 
 7. DIに関するanswer.mdのレポート作成
