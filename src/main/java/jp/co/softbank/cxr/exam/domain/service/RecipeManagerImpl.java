@@ -1,7 +1,9 @@
 package jp.co.softbank.cxr.exam.domain.service;
 
-import java.util.List;
+import static jp.co.softbank.cxr.exam.common.ErrorDetails.RECIPE_NOT_FOUND;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
+import java.util.List;
 import jp.co.softbank.cxr.exam.common.ApplicationException;
 import jp.co.softbank.cxr.exam.domain.mapper.RecipeEntityMapper;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
@@ -11,8 +13,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static java.util.Objects.isNull;
-import static jp.co.softbank.cxr.exam.common.ErrorDetails.RECIPE_NOT_FOUND;
 
 
 /**
@@ -32,7 +32,7 @@ public class RecipeManagerImpl implements RecipeManager {
   public List<Recipe> getRecipe(int id) {
     List<RecipeEntity> recipeEntity = recipeRepository.get(id);
 
-    if (isNull(recipeEntity)) {
+    if (isEmpty(recipeEntity)) {
       throw new ApplicationException(RECIPE_NOT_FOUND);
     }
     return RecipeEntityMapper.fromEntities(recipeEntity);

@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import jp.co.softbank.cxr.exam.common.ApplicationException;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
@@ -67,7 +68,7 @@ class RecipeManagerImplTest {
   @Test
   void test_指定されたIDのレシピが存在しない場合() {
     // mock repository method
-    when(recipeRepository.get(10)).thenReturn(null);
+    when(recipeRepository.get(10)).thenReturn(Collections.emptyList());
 
     // execute, assert and verify
     ApplicationException actual = assertThrows(ApplicationException.class, () -> recipeManager.getRecipe(10));
