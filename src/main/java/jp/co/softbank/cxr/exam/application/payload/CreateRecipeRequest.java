@@ -1,11 +1,11 @@
 package jp.co.softbank.cxr.exam.application.payload;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.validation.constraints.NotNull;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
 
 
 /**
@@ -37,6 +37,11 @@ public class CreateRecipeRequest {
   @JsonProperty(value = "cost")
   private String cost;
 
+  /**
+   * レシピ登録リクエストをレシピのドメインモデルに変換.
+   *
+   * @return レシピのドメインモデル
+   */
   public Recipe toModel() {
     return Recipe.builder()
                  .title(title)

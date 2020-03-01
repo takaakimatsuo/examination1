@@ -1,11 +1,12 @@
 package jp.co.softbank.cxr.exam.application.payload;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
+
+import java.util.Collections;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
 
 class GetRecipeResponseTest {
 

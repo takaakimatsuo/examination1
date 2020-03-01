@@ -34,7 +34,9 @@ public class GetRecipeResponse {
    */
   public static GetRecipeResponse of(List<Recipe> recipes) {
     GetRecipeResponseBuilder response = GetRecipeResponse.builder().message(GET_RECIPE_RESPONSE);
-    response.recipePayloadList(recipes.stream().map(RecipePayload::of).collect(Collectors.toList()));
+    response.recipePayloadList(recipes.stream()
+                                      .map(RecipePayload::of)
+                                      .collect(Collectors.toList()));
     return response.build();
   }
 }

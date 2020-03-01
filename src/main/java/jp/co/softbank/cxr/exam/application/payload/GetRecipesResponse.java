@@ -1,12 +1,12 @@
 package jp.co.softbank.cxr.exam.application.payload;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.stream.Collectors;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 /**

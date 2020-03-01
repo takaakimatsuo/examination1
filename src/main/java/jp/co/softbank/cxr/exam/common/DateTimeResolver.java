@@ -5,9 +5,9 @@
 
 package jp.co.softbank.cxr.exam.common;
 
+import java.time.LocalDateTime;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 
 /**
  * 現在の日時を取得して返却するリゾルバ.
