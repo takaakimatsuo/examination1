@@ -53,7 +53,7 @@ public class RecipeController {
   @GetMapping(path = "/recipes/{id}")
   @ResponseStatus(HttpStatus.OK)
   public GetRecipeResponse getRecipe(@PathVariable("id") Integer id) {
-    log.info("Request sent to /recipes/{}", id);
+    log.info("Request sent to GET /recipes/{}", id);
     List<Recipe> recipes = recipeManager.getRecipe(id);
     return GetRecipeResponse.of(recipes);
   }
@@ -65,7 +65,7 @@ public class RecipeController {
   @GetMapping(path = "/recipes")
   @ResponseStatus(HttpStatus.OK)
   public GetRecipesResponse getRecipes() {
-    log.info("Request sent to /recipes");
+    log.info("Request sent to GET /recipes");
     List<Recipe> recipes = recipeManager.getRecipes();
     return GetRecipesResponse.of(recipes);
   }
@@ -78,6 +78,7 @@ public class RecipeController {
   @ResponseStatus(HttpStatus.CREATED)
   public CreateRecipeResponse create(@RequestBody @Valid CreateRecipeRequest recipe,
                                      BindingResult bindingResult) {
+    log.info("Request sent to POST /recipes");
     if (bindingResult.hasErrors()) {
       throw new InvalidUserInputException(INVALID_RECIPE);
     }
@@ -95,6 +96,7 @@ public class RecipeController {
   @DeleteMapping(path = "/recipes/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void delete(@PathVariable("id") Integer id) {
+    log.info("Request sent to DELETE /recipes/{}", id);
     List<Recipe> deletedRecipe = recipeManager.deleteRecipe(id);
   }
 

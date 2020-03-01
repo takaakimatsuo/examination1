@@ -75,4 +75,13 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     return Collections.singletonList(recipeEntity);
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  @Transactional
+  public List<RecipeEntity> delete(Integer id) {
+   return null;
+  }
+
 }

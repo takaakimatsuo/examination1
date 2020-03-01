@@ -1,7 +1,6 @@
 package jp.co.softbank.cxr.exam.domain.service;
 
 import static jp.co.softbank.cxr.exam.common.ErrorDetails.RECIPE_NOT_FOUND;
-import static jp.co.softbank.cxr.exam.common.ErrorDetailsRequired.INVALID_RECIPE;
 import static jp.co.softbank.cxr.exam.common.Utils.toSqlTimestamp;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -12,7 +11,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import jp.co.softbank.cxr.exam.common.ApplicationException;
-import jp.co.softbank.cxr.exam.common.InvalidUserInputException;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import jp.co.softbank.cxr.exam.integration.entity.RecipeEntity;
 import jp.co.softbank.cxr.exam.integration.repository.RecipeRepository;
@@ -22,7 +20,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
@@ -159,6 +156,32 @@ class RecipeManagerImplTest {
 
     assertThat(actual).isEqualTo(expected);
     verify(recipeRepository).create(recipe);
+
+  }
+
+  @Test
+  void test_レシピ削除が正常に行われる場合() {
+    when(recipeRepository.delete(1)).thenReturn(Arrays.asList(RecipeEntity.builder()
+                                                                              .title("チキンカレー")
+                                                                              .makingTime("45分")
+                                                                              .serves("4人")
+                                                                              .ingredients("玉ねぎ,肉,スパイス")
+                                                                              .cost(1000)
+                                                                              .build()));
+
+    List<Recipe> expected = Collections.singletonList(Recipe.builder()
+                                                            .id(1)
+                                                            .title("チキンカレー")
+                                                            .makingTime("45分")
+                                                            .serves("4人")
+                                                            .ingredients("玉ねぎ,肉,スパイス")
+                                                            .cost("1000")
+                                                            .build());
+
+    List<Recipe> actual = recipeManager.deleteRecipe(1);
+
+    assertThat(actual).isEqualTo(expected);
+    verify(recipeRepository).delete(1);
 
   }
 

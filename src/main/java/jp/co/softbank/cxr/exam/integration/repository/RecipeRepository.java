@@ -34,4 +34,12 @@ public interface RecipeRepository {
    * @return 登録されたレシピのエンティティのリスト
    */
   List<RecipeEntity> create(Recipe recipe);
+
+  /**
+   * レシピをデータベースから削除.
+   *
+   * @param id 削除対象のレシピの ID
+   * @return 削除されたレシピのエンティティのリスト
+   */
+  List<RecipeEntity> delete(Integer id);
 }
