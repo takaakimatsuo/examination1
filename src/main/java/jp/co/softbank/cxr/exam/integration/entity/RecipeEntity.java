@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class RecipeEntity {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
@@ -48,4 +49,5 @@ public class RecipeEntity {
 
   @Column(name = "updated_at")
   private Timestamp updatedAt;
+
 }
