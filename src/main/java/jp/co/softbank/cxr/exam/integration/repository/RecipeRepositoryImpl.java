@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.persistence.EntityManager;
+
+import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import jp.co.softbank.cxr.exam.integration.entity.RecipeEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -52,6 +54,14 @@ public class RecipeRepositoryImpl implements RecipeRepository {
   public List<RecipeEntity> getAll() {
     List<RecipeEntity> recipeEntity = entityManager.createQuery(SELECT_ALL_FROM_RECIPES, RecipeEntity.class).getResultList();
     return recipeEntity;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<RecipeEntity> create(Recipe recipe) {
+   return null;
   }
 
 }

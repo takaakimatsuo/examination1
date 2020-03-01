@@ -1,6 +1,7 @@
 package jp.co.softbank.cxr.exam.domain.service;
 
 import static jp.co.softbank.cxr.exam.common.ErrorDetails.RECIPE_NOT_FOUND;
+import static jp.co.softbank.cxr.exam.common.ErrorDetailsRequired.INVALID_RECIPE;
 import static jp.co.softbank.cxr.exam.common.Utils.toSqlTimestamp;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -11,6 +12,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import jp.co.softbank.cxr.exam.common.ApplicationException;
+import jp.co.softbank.cxr.exam.common.InvalidUserInputException;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import jp.co.softbank.cxr.exam.integration.entity.RecipeEntity;
 import jp.co.softbank.cxr.exam.integration.repository.RecipeRepository;
@@ -20,6 +22,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
@@ -128,5 +131,47 @@ class RecipeManagerImplTest {
     // execute, assert and verify
     ApplicationException actual = assertThrows(ApplicationException.class, () -> recipeManager.getRecipes());
     assertThat(actual.getErrorDetail()).isEqualTo(RECIPE_NOT_FOUND);
+  }
+
+  @Test
+  void test_レシピ登録が正常に行われる場合() {
+    // mock repository method
+    Recipe recipe = Recipe.builder()
+                          .title("チキンカレー")
+                          .makingTime("45分")
+                          .serves("4人")
+                          .ingredients("玉ねぎ,肉,スパイス")
+                          .cost("1000")
+                          .build();
+
+    when(recipeRepository.create(recipe)).thenReturn(Collections.singletonList(RecipeEntity.builder()
+                                                                                           .title("チキンカレー")
+                                                                                           .makingTime("45分")
+                                                                                           .serves("4人")
+                                                                                           .ingredients("玉ねぎ,肉,スパイス")
+                                                                                           .cost(1000)
+                                                                                           .createdAt(toSqlTimestamp("2020-02-23 14:00:00"))
+                                                                                           .updatedAt(toSqlTimestamp("2020-02-23 14:00:00"))
+                                                                                           .build()));
+
+    List<Recipe> actual = recipeManager.createRecipe(recipe);
+
+    assertThat(actual).isEqualTo(recipe);
+    verify(recipeRepository).create(recipe);
+
+  }
+
+  @Test
+  void test_不正なレシピ登録がに正常にエラーを返す場合() {
+    // execute, assert and verify
+    InvalidUserInputException actual = assertThrows(InvalidUserInputException.class, () -> recipeManager.createRecipe(Recipe.builder()
+                                                                                                                  .title("チキンカレー")
+                                                                                                                  .makingTime("45分")
+                                                                                                                  .serves("4人")
+                                                                                                                  .ingredients("玉ねぎ,肉,スパイス")
+                                                                                                                  .cost("あいうえお")
+                                                                                                                  .build()));
+    assertThat(actual.getErrorDetail()).isEqualTo(INVALID_RECIPE);
+
   }
 }

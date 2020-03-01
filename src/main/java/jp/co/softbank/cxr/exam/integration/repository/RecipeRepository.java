@@ -1,6 +1,8 @@
 package jp.co.softbank.cxr.exam.integration.repository;
 
 import java.util.List;
+
+import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import jp.co.softbank.cxr.exam.integration.entity.RecipeEntity;
 
 
@@ -24,4 +26,12 @@ public interface RecipeRepository {
    * @return レシピのエンティティのリスト
    */
   List<RecipeEntity> getAll();
+
+  /**
+   * レシピをデータベースに登録.
+   *
+   * @param recipe 登録対象のレシピ
+   * @return 登録されたレシピのエンティティのリスト
+   */
+  List<RecipeEntity> create(Recipe recipe);
 }
