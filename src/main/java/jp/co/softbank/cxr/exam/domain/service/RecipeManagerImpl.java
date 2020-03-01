@@ -30,12 +30,12 @@ public class RecipeManagerImpl implements RecipeManager {
    */
   @Override
   public List<Recipe> getRecipe(int id) {
-    List<RecipeEntity> recipeEntity = recipeRepository.get(id);
+    List<RecipeEntity> recipeEntities = recipeRepository.get(id);
 
-    if (isEmpty(recipeEntity)) {
+    if (isEmpty(recipeEntities)) {
       throw new ApplicationException(RECIPE_NOT_FOUND);
     }
-    return RecipeEntityMapper.fromEntities(recipeEntity);
+    return RecipeEntityMapper.fromEntities(recipeEntities);
   }
 
   /**
@@ -43,12 +43,12 @@ public class RecipeManagerImpl implements RecipeManager {
    */
   @Override
   public List<Recipe> getRecipes() {
-    List<RecipeEntity> recipeEntity = recipeRepository.getAll();
+    List<RecipeEntity> recipeEntities = recipeRepository.getAll();
 
-    if (isEmpty(recipeEntity)) {
+    if (isEmpty(recipeEntities)) {
       throw new ApplicationException(RECIPE_NOT_FOUND);
     }
-    return RecipeEntityMapper.fromEntities(recipeEntity);
+    return RecipeEntityMapper.fromEntities(recipeEntities);
   }
 
   /**
@@ -56,8 +56,8 @@ public class RecipeManagerImpl implements RecipeManager {
    */
   @Override
   public List<Recipe> createRecipe(Recipe recipe) {
-    List<RecipeEntity> recipeEntity = recipeRepository.create(recipe);
-    return RecipeEntityMapper.fromEntities(recipeEntity);
+    List<RecipeEntity> recipeEntities = recipeRepository.create(recipe);
+    return RecipeEntityMapper.fromEntities(recipeEntities);
   }
 
   /**
@@ -65,6 +65,12 @@ public class RecipeManagerImpl implements RecipeManager {
    *
    */
   public List<Recipe> deleteRecipe(int id) {
-    return null;
+
+    List<RecipeEntity> recipeEntities = recipeRepository.get(id);
+    if (isEmpty(recipeEntities)) {
+      throw new ApplicationException(RECIPE_NOT_FOUND);
+    }
+    recipeRepository.delete(id);
+    return RecipeEntityMapper.fromEntities(recipeEntities);
   }
 }

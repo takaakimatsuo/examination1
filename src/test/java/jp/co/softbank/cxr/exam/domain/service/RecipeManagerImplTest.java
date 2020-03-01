@@ -161,16 +161,23 @@ class RecipeManagerImplTest {
 
   @Test
   void test_レシピ削除が正常に行われる場合() {
-    when(recipeRepository.delete(1)).thenReturn(Arrays.asList(RecipeEntity.builder()
-                                                                              .title("チキンカレー")
-                                                                              .makingTime("45分")
-                                                                              .serves("4人")
-                                                                              .ingredients("玉ねぎ,肉,スパイス")
-                                                                              .cost(1000)
-                                                                              .build()));
+    when(recipeRepository.get(1)).thenReturn(Collections.singletonList(RecipeEntity.builder()
+                                                                                   .title("チキンカレー")
+                                                                                   .makingTime("45分")
+                                                                                   .serves("4人")
+                                                                                   .ingredients("玉ねぎ,肉,スパイス")
+                                                                                   .cost(1000)
+                                                                                   .build()));
+
+    when(recipeRepository.delete(1)).thenReturn(Collections.singletonList(RecipeEntity.builder()
+                                                                                          .title("チキンカレー")
+                                                                                          .makingTime("45分")
+                                                                                          .serves("4人")
+                                                                                          .ingredients("玉ねぎ,肉,スパイス")
+                                                                                          .cost(1000)
+                                                                                          .build()));
 
     List<Recipe> expected = Collections.singletonList(Recipe.builder()
-                                                            .id(1)
                                                             .title("チキンカレー")
                                                             .makingTime("45分")
                                                             .serves("4人")
@@ -181,8 +188,21 @@ class RecipeManagerImplTest {
     List<Recipe> actual = recipeManager.deleteRecipe(1);
 
     assertThat(actual).isEqualTo(expected);
+    verify(recipeRepository).get(1);
     verify(recipeRepository).delete(1);
 
+  }
+
+
+  @Test
+  void test_レシピ削除対象が存在しない場合() {
+    when(recipeRepository.get(1)).thenReturn(Collections.emptyList());
+
+
+    // execute, assert and verify
+    ApplicationException actual = assertThrows(ApplicationException.class, () -> recipeManager.deleteRecipe(1));
+    assertThat(actual.getErrorDetail()).isEqualTo(RECIPE_NOT_FOUND);
+    verify(recipeRepository).get(1);
   }
 
 }
