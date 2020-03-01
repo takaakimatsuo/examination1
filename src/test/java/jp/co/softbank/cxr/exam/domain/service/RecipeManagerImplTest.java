@@ -154,9 +154,10 @@ class RecipeManagerImplTest {
                                                                                            .updatedAt(toSqlTimestamp("2020-02-23 14:00:00"))
                                                                                            .build()));
 
+    List<Recipe> expected = Arrays.asList(recipe);
     List<Recipe> actual = recipeManager.createRecipe(recipe);
 
-    assertThat(actual).isEqualTo(recipe);
+    assertThat(actual).isEqualTo(expected);
     verify(recipeRepository).create(recipe);
 
   }

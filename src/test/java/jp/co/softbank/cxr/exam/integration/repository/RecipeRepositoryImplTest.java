@@ -12,6 +12,8 @@ import com.ninja_squad.dbsetup.operation.Operation;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import jp.co.softbank.cxr.exam.integration.entity.RecipeEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -134,6 +136,34 @@ class RecipeRepositoryImplTest {
 
     List<RecipeEntity> expected = Collections.emptyList();
     List<RecipeEntity> actual = recipeRepository.getAll();
+    assertThat(actual).isEqualTo(expected);
+  }
+
+  @Test
+  void test_レシピを正常に登録() {
+
+    Recipe recipe = Recipe.builder()
+                          .title("チキンスープ")
+                          .makingTime("45分")
+                          .serves("4人")
+                          .ingredients("玉ねぎ,鳥肉,スパイス")
+                          .cost("1000")
+                          .build();
+    // expected
+    List<RecipeEntity> expected = Collections.singletonList(RecipeEntity.builder()
+                                                                        .id(3)
+                                                                        .title("チキンスープ")
+                                                                        .makingTime("45分")
+                                                                        .serves("4人")
+                                                                        .ingredients("玉ねぎ,鳥肉,スパイス")
+                                                                        .cost(1000)
+                                                                        .createdAt(toSqlTimestamp("2016-01-10 12:10:12"))
+                                                                        .updatedAt(toSqlTimestamp("2016-01-11 12:10:12"))
+                                                                        .build());
+
+    // execute
+    List<RecipeEntity> actual = recipeRepository.create(recipe);
+    // assert
     assertThat(actual).isEqualTo(expected);
   }
 }
