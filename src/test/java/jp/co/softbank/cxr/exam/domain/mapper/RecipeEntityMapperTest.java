@@ -54,7 +54,7 @@ class RecipeEntityMapperTest {
                                                .title("オムライス")
                                                .makingTime("45分")
                                                .serves("3人")
-                                               .ingredients("玉ねぎ,肉,卵")
+                                               .ingredients("玉ねぎ,卵,スパイス,醤油")
                                                .cost("3000")
                                                .build());
 
@@ -73,7 +73,7 @@ class RecipeEntityMapperTest {
                                                                   .title("オムライス")
                                                                   .makingTime("45分")
                                                                   .serves("3人")
-                                                                  .ingredients("玉ねぎ,肉,卵")
+                                                                  .ingredients("玉ねぎ,卵,スパイス,醤油")
                                                                   .cost(3000)
                                                                   .createdAt(toSqlTimestamp("2020-02-03 18:00:00"))
                                                                   .updatedAt(toSqlTimestamp("2020-02-29 10:45:00"))

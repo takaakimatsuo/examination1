@@ -11,5 +11,8 @@ public class ErrorDetail {
   @JsonProperty("message")
   private String message;
 
+  @JsonProperty("required")
+  private String required;
+
 
 }

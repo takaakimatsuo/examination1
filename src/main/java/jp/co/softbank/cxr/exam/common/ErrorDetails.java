@@ -10,4 +10,14 @@ public class ErrorDetails {
       = ErrorDetail.builder()
                    .message("No Recipe found")
                    .build();
+
+  /**
+   * 不正なレシピを登録しようとした場合.
+   *
+   * */
+  public static final ErrorDetail INVALID_RECIPE
+      = ErrorDetail.builder()
+                   .message("Recipe creation failed!")
+                   .required("title, making_time, serves, ingredients, cost")
+                   .build();
 }

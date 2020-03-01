@@ -19,4 +19,12 @@ public interface RecipeManager {
    * @return 実際に取得されたレシピ
    */
   List<Recipe> getRecipes();
+
+  /**
+   * 新しいレシピの登録.
+   *
+   * @param recipe 登録したいレシピ
+   * @return 実際に登録されたレシピ
+   */
+  List<Recipe> createRecipe(Recipe recipe);
 }
