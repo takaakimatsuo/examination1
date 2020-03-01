@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 
 /**
  * レシピの登録時に使うリクエスト.
@@ -14,21 +16,23 @@ import lombok.Data;
 @Builder
 public class CreateRecipeRequest {
 
-  @JsonProperty(value = "id")
-  private Integer id;
-
+  @NotNull
   @JsonProperty(value = "title")
   private String title;
 
+  @NotNull
   @JsonProperty(value = "making_time")
   private String makingTime;
 
+  @NotNull
   @JsonProperty(value = "serves")
   private String serves;
 
+  @NotNull
   @JsonProperty(value = "ingredients")
   private String ingredients;
 
+  @NotNull
   @JsonProperty(value = "cost")
   private String cost;
 

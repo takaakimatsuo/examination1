@@ -1,12 +1,12 @@
 package jp.co.softbank.cxr.exam.application.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import jp.co.softbank.cxr.exam.application.payload.CreateRecipeResponse;
-import jp.co.softbank.cxr.exam.application.payload.GetRecipeResponse;
-import jp.co.softbank.cxr.exam.application.payload.GetRecipesResponse;
-import jp.co.softbank.cxr.exam.application.payload.RecipePayload;
+import jp.co.softbank.cxr.exam.application.payload.*;
+import jp.co.softbank.cxr.exam.common.ApplicationException;
 import jp.co.softbank.cxr.exam.common.ErrorDetail;
+import jp.co.softbank.cxr.exam.common.InvalidUserInputException;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import jp.co.softbank.cxr.exam.domain.service.RecipeManager;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +16,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import static jp.co.softbank.cxr.exam.common.ErrorDetailsRequired.INVALID_RECIPE;
 
 
 /**
@@ -68,9 +70,13 @@ public class RecipeController {
    */
   @PostMapping(path = "/recipes")
   @ResponseStatus(HttpStatus.CREATED)
-  public CreateRecipeResponse create(@RequestBody @Valid RecipePayload recipe,
+  public CreateRecipeResponse create(@RequestBody @Valid CreateRecipeRequest recipe,
                                      BindingResult bindingResult) {
-   return null;
+    if (bindingResult.hasErrors()) {
+      throw new InvalidUserInputException(INVALID_RECIPE);
+    }
+
+    return null;
   }
 
 

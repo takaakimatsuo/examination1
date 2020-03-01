@@ -1,7 +1,7 @@
 package jp.co.softbank.cxr.exam.application.controller;
 
-import static jp.co.softbank.cxr.exam.common.ErrorDetails.INVALID_RECIPE;
 import static jp.co.softbank.cxr.exam.common.ErrorDetails.RECIPE_NOT_FOUND;
+import static jp.co.softbank.cxr.exam.common.ErrorDetailsRequired.INVALID_RECIPE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -17,6 +17,7 @@ import java.util.List;
 
 import jp.co.softbank.cxr.exam.application.payload.*;
 import jp.co.softbank.cxr.exam.common.ApplicationException;
+import jp.co.softbank.cxr.exam.common.InvalidUserInputException;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import jp.co.softbank.cxr.exam.domain.service.RecipeManager;
 import org.junit.jupiter.api.DisplayName;
@@ -225,7 +226,7 @@ class RecipeControllerTest {
                           .ingredients("玉ねぎ,肉,スパイス")
                           .cost("1000")
                           .build();
-    when(recipeManager.createRecipe(recipe)).thenThrow(new ApplicationException(INVALID_RECIPE));
+    when(recipeManager.createRecipe(recipe)).thenThrow(new InvalidUserInputException(INVALID_RECIPE));
 
     // expected error response
     String expectedResponse = objectMapper.writeValueAsString(INVALID_RECIPE);
