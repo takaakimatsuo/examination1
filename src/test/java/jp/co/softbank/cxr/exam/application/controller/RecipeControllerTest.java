@@ -289,7 +289,7 @@ class RecipeControllerTest {
 
     // execute, assert and verify
     mockMvc.perform(delete("/recipes/1"))
-      .andExpect(status().isNoContent())
+      .andExpect(status().isNotFound())
       .andExpect(content().json(expectedResponse));
     verify(recipeManager).deleteRecipe(1);
   }

@@ -94,7 +94,8 @@ public class RecipeController {
 
   @DeleteMapping(path = "/recipes/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void delete() {
+  public void delete(@PathVariable("id") Integer id) {
+    List<Recipe> deletedRecipe = recipeManager.deleteRecipe(id);
   }
 
 }
