@@ -219,23 +219,23 @@ class RecipeControllerTest {
   void test_不正なレシピをPOSTリクエストするとエラーが返される() throws Exception {
     // mock domain method
     // mock domain method
-    Recipe recipe = Recipe.builder()
+    CreateRecipeRequest recipe = CreateRecipeRequest.builder()
                           .title("チキンカレー")
                           .makingTime("45分")
-                          .serves("4人")
                           .ingredients("玉ねぎ,肉,スパイス")
                           .cost("1000")
                           .build();
-    when(recipeManager.createRecipe(recipe)).thenThrow(new InvalidUserInputException(INVALID_RECIPE));
 
     // expected error response
     String expectedResponse = objectMapper.writeValueAsString(INVALID_RECIPE);
 
+
     // execute, assert and verify
-    mockMvc.perform(get("/recipes"))
+    mockMvc.perform(post("/recipes")
+      .contentType(MediaType.APPLICATION_JSON)
+      .content(objectMapper.writeValueAsBytes(recipe)))
       .andExpect(status().isBadRequest())
-      .andExpect(content().json(expectedResponse));
-    verify(recipeManager).getRecipes();
+      .andExpect(content().json(expectedResponse));;
   }
 
 

@@ -26,4 +26,13 @@ public class CreateRecipeResponse {
   @JsonProperty(value = "recipe")
   private List<RecipePayload> recipePayloadList;
 
+  public static CreateRecipeResponse of(List<Recipe> recipes) {
+    return CreateRecipeResponse.builder()
+                               .message(POST_RECIPE_RESPONSE)
+                               .recipePayloadList(recipes.stream()
+                                                         .map(RecipePayload::of)
+                                                         .collect(Collectors.toList()))
+                               .build();
+  }
+
 }

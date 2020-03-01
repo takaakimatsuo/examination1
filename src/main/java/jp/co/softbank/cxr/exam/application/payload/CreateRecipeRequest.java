@@ -1,6 +1,7 @@
 package jp.co.softbank.cxr.exam.application.payload;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import lombok.Builder;
 import lombok.Data;
 
@@ -35,5 +36,15 @@ public class CreateRecipeRequest {
   @NotNull
   @JsonProperty(value = "cost")
   private String cost;
+
+  public Recipe toModel() {
+    return Recipe.builder()
+                 .title(title)
+                 .makingTime(makingTime)
+                 .serves(serves)
+                 .ingredients(ingredients)
+                 .cost(cost)
+                 .build();
+  }
 
 }

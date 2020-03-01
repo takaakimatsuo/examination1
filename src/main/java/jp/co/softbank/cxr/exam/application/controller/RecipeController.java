@@ -75,8 +75,9 @@ public class RecipeController {
     if (bindingResult.hasErrors()) {
       throw new InvalidUserInputException(INVALID_RECIPE);
     }
+    List<Recipe> registeredRecipe = recipeManager.createRecipe(recipe.toModel());
 
-    return null;
+    return CreateRecipeResponse.of(registeredRecipe);
   }
 
 
