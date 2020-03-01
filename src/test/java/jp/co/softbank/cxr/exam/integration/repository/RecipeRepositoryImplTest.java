@@ -5,25 +5,33 @@ import static com.ninja_squad.dbsetup.Operations.insertInto;
 import static com.ninja_squad.dbsetup.Operations.sequenceOf;
 import static jp.co.softbank.cxr.exam.common.Utils.toSqlTimestamp;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 import com.ninja_squad.dbsetup.DbSetup;
 import com.ninja_squad.dbsetup.destination.DriverManagerDestination;
 import com.ninja_squad.dbsetup.operation.Operation;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import jp.co.softbank.cxr.exam.common.DateTimeResolver;
+import jp.co.softbank.cxr.exam.common.Utils;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import jp.co.softbank.cxr.exam.integration.entity.RecipeEntity;
+import org.joda.time.DateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-
+import javax.persistence.EntityManager;
 
 
 @ExtendWith(SpringExtension.class)
@@ -32,7 +40,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 class RecipeRepositoryImplTest {
 
   @Autowired
-  RecipeRepository recipeRepository;
+  RecipeRepositoryImpl recipeRepository;
+
 
   private static final Operation DELETE_ALL = deleteAllFrom("recipes");
   private static final Operation INSERT_RECIPE
@@ -70,6 +79,7 @@ class RecipeRepositoryImplTest {
     DbSetup dbSetup = new DbSetup(new DriverManagerDestination("jdbc:h2:mem:test;MODE=MSSQLServer;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false", "sa", "sa"), operation);
     dbSetup.launch();
   }
+
 
   @Test
   void test_指定したidでレシピを正常に取得 () {
@@ -151,19 +161,16 @@ class RecipeRepositoryImplTest {
                           .build();
     // expected
     List<RecipeEntity> expected = Collections.singletonList(RecipeEntity.builder()
-                                                                        .id(3)
                                                                         .title("チキンスープ")
                                                                         .makingTime("45分")
                                                                         .serves("4人")
                                                                         .ingredients("玉ねぎ,鳥肉,スパイス")
                                                                         .cost(1000)
-                                                                        .createdAt(toSqlTimestamp("2016-01-10 12:10:12"))
-                                                                        .updatedAt(toSqlTimestamp("2016-01-11 12:10:12"))
                                                                         .build());
 
     // execute
     List<RecipeEntity> actual = recipeRepository.create(recipe);
     // assert
-    assertThat(actual).isEqualTo(expected);
+    assertThat(actual).usingElementComparatorIgnoringFields("id", "createdAt", "updatedAt").isEqualTo(expected);
   }
 }

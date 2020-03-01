@@ -31,14 +31,5 @@ public class Utils {
     }
   }
 
-  /**
-   * 現在の日時を返す.
-   *
-   * @return 現在の日時
-   */
-  public static LocalDateTime getCurrentTime() {
-    return LocalDateTime.now();
-  }
-
 
 }

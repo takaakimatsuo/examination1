@@ -1,19 +1,20 @@
 package jp.co.softbank.cxr.exam.domain.mapper;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import jp.co.softbank.cxr.exam.integration.entity.RecipeEntity;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import static jp.co.softbank.cxr.exam.common.Utils.getCurrentTime;
-import static jp.co.softbank.cxr.exam.common.Utils.toSqlTimestamp;
 
 /**
  * レシピのドメインモデルとエンティティを相互に変換を行うマッパー.
  *
  */
 public class RecipeEntityMapper {
+
   private RecipeEntityMapper() {
     // Do Nothing.
   }
@@ -55,7 +56,7 @@ public class RecipeEntityMapper {
    * @param recipe レシピのドメインモデル
    * @return レシピのエンティティ
    */
-  public static RecipeEntity toEntity(Recipe recipe) {
+  public static RecipeEntity toEntity(Recipe recipe, LocalDateTime currentTime) {
     return RecipeEntity.builder()
       .id(recipe.getId())
       .title(recipe.getTitle())
@@ -63,8 +64,8 @@ public class RecipeEntityMapper {
       .ingredients(recipe.getIngredients())
       .makingTime(recipe.getMakingTime())
       .cost(Integer.parseInt(recipe.getCost()))
-      .updatedAt(toSqlTimestamp(getCurrentTime().toString()))
-      .createdAt(toSqlTimestamp(getCurrentTime().toString()))
+      .updatedAt(Timestamp.valueOf(currentTime))
+      .createdAt(Timestamp.valueOf(currentTime))
       .build();
   }
 }

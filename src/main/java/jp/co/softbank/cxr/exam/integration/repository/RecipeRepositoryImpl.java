@@ -4,9 +4,13 @@ import static java.util.Objects.nonNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 
+import jp.co.softbank.cxr.exam.common.DateTimeResolver;
+import jp.co.softbank.cxr.exam.domain.mapper.RecipeEntityMapper;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import jp.co.softbank.cxr.exam.integration.entity.RecipeEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +28,10 @@ public class RecipeRepositoryImpl implements RecipeRepository {
 
   @Autowired
   EntityManager entityManager;
+
+  @Autowired
+  DateTimeResolver dateTimeResolver;
+
 
   /**
    * entityManager を返却するメソッド.
@@ -60,8 +68,11 @@ public class RecipeRepositoryImpl implements RecipeRepository {
    * {@inheritDoc}
    */
   @Override
+  @Transactional
   public List<RecipeEntity> create(Recipe recipe) {
-   return null;
+    RecipeEntity recipeEntity = RecipeEntityMapper.toEntity(recipe, dateTimeResolver.getCurrentTime());
+    entityManager.persist(recipeEntity);
+    return Collections.singletonList(recipeEntity);
   }
 
 }
