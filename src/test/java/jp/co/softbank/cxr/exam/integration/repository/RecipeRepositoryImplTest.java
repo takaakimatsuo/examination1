@@ -188,7 +188,8 @@ class RecipeRepositoryImplTest {
 
     // execute
     List<RecipeEntity> actual = recipeRepository.delete(1);
+
     // assert
-    assertThat(actual).isEqualTo(expected);
+    assertThat(actual).usingElementComparatorIgnoringFields("id", "createdAt", "updatedAt").isEqualTo(expected);
   }
 }

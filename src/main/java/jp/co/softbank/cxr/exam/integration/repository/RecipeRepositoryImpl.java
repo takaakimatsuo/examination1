@@ -81,7 +81,11 @@ public class RecipeRepositoryImpl implements RecipeRepository {
   @Override
   @Transactional
   public List<RecipeEntity> delete(Integer id) {
-   return null;
+    RecipeEntity recipeEntity = entityManager.find(RecipeEntity.class, id);
+    if (nonNull(recipeEntity)) {
+      entityManager.remove(recipeEntity);
+    }
+    return Arrays.asList(recipeEntity);
   }
 
 }
