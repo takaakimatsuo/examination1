@@ -173,4 +173,22 @@ class RecipeRepositoryImplTest {
     // assert
     assertThat(actual).usingElementComparatorIgnoringFields("id", "createdAt", "updatedAt").isEqualTo(expected);
   }
+
+  @Test
+  void test_レシピを正常に削除() {
+
+    // expected
+    List<RecipeEntity> expected = Collections.singletonList(RecipeEntity.builder()
+                                                                        .title("チキンカレー")
+                                                                        .makingTime("45分")
+                                                                        .serves("4人")
+                                                                        .ingredients("玉ねぎ,肉,スパイス")
+                                                                        .cost(1000)
+                                                                        .build());
+
+    // execute
+    List<RecipeEntity> actual = recipeRepository.delete(1);
+    // assert
+    assertThat(actual).isEqualTo(expected);
+  }
 }
