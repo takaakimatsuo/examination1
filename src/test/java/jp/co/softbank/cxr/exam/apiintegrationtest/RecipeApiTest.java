@@ -5,6 +5,7 @@ import static com.ninja_squad.dbsetup.Operations.insertInto;
 import static com.ninja_squad.dbsetup.Operations.sequenceOf;
 import static jp.co.softbank.cxr.exam.common.ErrorDetails.RECIPE_NOT_FOUND;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -181,7 +182,24 @@ class RecipeApiTest {
     assertThat(actualResponse.getRecipePayloadList().get(0).getMakingTime()).isEqualTo(expectedResponse.getRecipePayloadList().get(0).getMakingTime());
     assertThat(actualResponse.getRecipePayloadList().get(0).getServes()).isEqualTo(expectedResponse.getRecipePayloadList().get(0).getServes());
     assertThat(actualResponse.getRecipePayloadList().get(0).getCost()).isEqualTo(expectedResponse.getRecipePayloadList().get(0).getCost());
+  }
 
+
+  @Test
+  void test_正常に指定したIDでレシピの削除を行う() throws Exception {
+    // execute, assert
+    mockMvc.perform(delete("/recipes/1"))
+      .andExpect(status().isNoContent());
+  }
+
+  @Test
+  void test_正常に指定したIDで存在しないレシピの削除を行う場合にエラーが返る() throws Exception {
+    // expected
+    String expectedResponse = objectMapper.writeValueAsString(RECIPE_NOT_FOUND);
+    // execute, assert
+    mockMvc.perform(delete("/recipes/10"))
+      .andExpect(status().isNotFound())
+      .andExpect(content().json(expectedResponse));
   }
 
 
