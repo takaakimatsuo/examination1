@@ -36,7 +36,7 @@
         d. [×] Domainの実装
         e. [×] Integrationの単体テスト
         f. [×] Integrationの実装
-        g. ITテストの実装
+        g. [×] ITテストの実装
 
 6. DELETE /recipes/{id} -> 指定レシピの削除
         a. [×] Controllerの単体テスト

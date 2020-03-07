@@ -7,6 +7,7 @@ import static jp.co.softbank.cxr.exam.common.ErrorDetails.RECIPE_NOT_FOUND;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -22,6 +23,8 @@ import jp.co.softbank.cxr.exam.application.payload.CreateRecipeResponse;
 import jp.co.softbank.cxr.exam.application.payload.GetRecipeResponse;
 import jp.co.softbank.cxr.exam.application.payload.GetRecipesResponse;
 import jp.co.softbank.cxr.exam.application.payload.RecipePayload;
+import jp.co.softbank.cxr.exam.application.payload.UpdateRecipeRequest;
+import jp.co.softbank.cxr.exam.application.payload.UpdateRecipeResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -200,6 +203,57 @@ class RecipeApiTest {
     mockMvc.perform(delete("/recipes/10"))
       .andExpect(status().isNotFound())
       .andExpect(content().json(expectedResponse));
+  }
+
+  @Test
+  void test_正常に既存レシピの更新を行う() throws Exception {
+    // expected
+    UpdateRecipeResponse expectedResponse = UpdateRecipeResponse.builder()
+                                                                .message("Recipe successfully updated!")
+                                                                .recipePayloadList(Collections.singletonList(RecipePayload.builder()
+                                                                                                                          .title("オムレツ")
+                                                                                                                          .makingTime("30分")
+                                                                                                                          .serves("2人")
+                                                                                                                          .ingredients("玉ねぎ,肉,卵")
+                                                                                                                          .cost("700")
+                                                                                                                          .build()))
+                                                                .build();
+
+    UpdateRecipeRequest updateRecipeRequest = UpdateRecipeRequest.builder()
+                                                                 .title("オムレツ")
+                                                                 .build();
+
+
+    // execute & assert
+    String responseJsonString = mockMvc.perform(patch("/recipes/2")
+                                       .contentType(MediaType.APPLICATION_JSON)
+                                       .content(objectMapper.writeValueAsBytes(updateRecipeRequest)))
+                                       .andExpect(status().isOk())
+                                       .andReturn().getResponse().getContentAsString();
+
+    UpdateRecipeResponse actualResponse = objectMapper.readValue(responseJsonString, UpdateRecipeResponse.class);
+    assertThat(actualResponse.getRecipePayloadList().get(0).getTitle()).isEqualTo(expectedResponse.getRecipePayloadList().get(0).getTitle());
+    assertThat(actualResponse.getRecipePayloadList().get(0).getIngredients()).isEqualTo(expectedResponse.getRecipePayloadList().get(0).getIngredients());
+    assertThat(actualResponse.getRecipePayloadList().get(0).getMakingTime()).isEqualTo(expectedResponse.getRecipePayloadList().get(0).getMakingTime());
+    assertThat(actualResponse.getRecipePayloadList().get(0).getServes()).isEqualTo(expectedResponse.getRecipePayloadList().get(0).getServes());
+    assertThat(actualResponse.getRecipePayloadList().get(0).getCost()).isEqualTo(expectedResponse.getRecipePayloadList().get(0).getCost());
+  }
+
+  @Test
+  void test_正常に指定したIDで存在しないレシピの更新を行う場合にエラーが返る() throws Exception {
+
+    UpdateRecipeRequest updateRecipeRequest = UpdateRecipeRequest.builder()
+                                                                 .title("オムレツ")
+                                                                 .build();
+
+    // expected
+    String expectedResponse = objectMapper.writeValueAsString(RECIPE_NOT_FOUND);
+    // execute, assert
+    mockMvc.perform(patch("/recipes/10")
+           .contentType(MediaType.APPLICATION_JSON)
+           .content(objectMapper.writeValueAsBytes(updateRecipeRequest)))
+           .andExpect(status().isNotFound())
+           .andExpect(content().json(expectedResponse));
   }
 
 
