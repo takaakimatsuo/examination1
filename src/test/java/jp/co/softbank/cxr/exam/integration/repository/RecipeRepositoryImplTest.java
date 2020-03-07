@@ -21,6 +21,7 @@ import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import jp.co.softbank.cxr.exam.integration.entity.RecipeEntity;
 import org.joda.time.DateTime;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -191,5 +192,38 @@ class RecipeRepositoryImplTest {
 
     // assert
     assertThat(actual).usingElementComparatorIgnoringFields("id", "createdAt", "updatedAt").isEqualTo(expected);
+  }
+
+  @Nested
+  class 既存のレシピの更新する時 {
+    @Nested
+    class 正常に特定のレシピを更新できる場合 {
+
+      @Test
+      void test_レシピを正常に更新() {
+
+        Recipe recipe = Recipe.builder()
+                              .id(1)
+                              .makingTime("20分")
+                              .serves("2人")
+                              .build();
+
+
+        // expected
+        List<RecipeEntity> expected = Collections.singletonList(RecipeEntity.builder()
+                                                                            .title("チキンカレー")
+                                                                            .makingTime("20分")
+                                                                            .serves("2人")
+                                                                            .ingredients("玉ねぎ,肉,スパイス")
+                                                                            .cost(1000)
+                                                                            .build());
+        // execute
+        List<RecipeEntity> actual = recipeRepository.update(recipe);
+
+        // assert
+        assertThat(actual).usingElementComparatorIgnoringFields("id", "createdAt", "updatedAt").isEqualTo(expected);
+      }
+    }
+
   }
 }

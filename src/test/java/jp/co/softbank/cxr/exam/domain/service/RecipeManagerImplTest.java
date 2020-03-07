@@ -230,6 +230,7 @@ class RecipeManagerImplTest {
 
       }
     }
+
     @Nested
     class レシピが存在しなく削除ができない場合 {
       @Test
@@ -249,7 +250,6 @@ class RecipeManagerImplTest {
   class 既存レシピを更新する時 {
     @Nested
     class 正常に特定のレシピを更新できる場合 {
-
       @Test
       void test_指定されたIDで更新されたレシピをリストとしてリターンする() {
 
@@ -297,6 +297,7 @@ class RecipeManagerImplTest {
         verify(recipeRepository).update(recipe);
       }
     }
+
     @Nested
     class レシピが存在しなく更新ができない場合 {
       @Test
@@ -305,10 +306,10 @@ class RecipeManagerImplTest {
 
         // mock repository method.
         Recipe recipe = Recipe.builder()
-          .id(10)
-          .makingTime("10分")
-          .serves("2人")
-          .build();
+                              .id(10)
+                              .makingTime("10分")
+                              .serves("2人")
+                              .build();
         // execute, assert and verify
         ApplicationException actual = assertThrows(ApplicationException.class, () -> recipeManager.updateRecipe(recipe));
         assertThat(actual.getErrorDetail()).isEqualTo(RECIPE_NOT_FOUND);
