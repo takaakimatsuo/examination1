@@ -16,6 +16,7 @@ import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import jp.co.softbank.cxr.exam.domain.service.RecipeManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,6 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RecipeController {
 
 
+  @Autowired
   private final RecipeManager recipeManager;
 
   /**
