@@ -5,6 +5,10 @@ import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * レシピ情報のペイロードを表すクラス.
+ *
+ */
 @Data
 @Builder
 public class RecipePayload {

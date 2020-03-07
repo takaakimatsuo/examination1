@@ -10,7 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * エラーレスポンスのクラス.
+ * エラーレスポンスのクラスを表すクラス.
  *
  */
 @Data

@@ -47,4 +47,4 @@
         f. [×] Integrationの実装
         g. [×] ITテストの実装
 
-7. DIに関するanswer.mdのレポート作成
+7. [×] DIに関するanswer.mdのレポート作成

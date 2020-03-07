@@ -11,7 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * エラーレスポンスのクラス.
+ * エラーレスポンスのクラスを表すクラス.
  *
  */
 @Data
