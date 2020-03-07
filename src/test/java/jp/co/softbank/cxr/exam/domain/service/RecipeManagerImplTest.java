@@ -37,25 +37,25 @@ class RecipeManagerImplTest {
 
   @Test
   void test_指定されたIDでレシピが正常に取得できる場合() {
-    when(recipeRepository.get(1)).thenReturn(Arrays.asList(RecipeEntity.builder()
-                                                         .id(1)
-                                                         .title("チキンカレー")
-                                                         .makingTime("45分")
-                                                         .serves("4人")
-                                                         .ingredients("玉ねぎ,肉,スパイス")
-                                                         .cost(1000)
-                                                         .createdAt(toSqlTimestamp("2020-02-23 14:00:00"))
-                                                         .updatedAt(toSqlTimestamp("2020-02-23 14:00:00"))
-                                                         .build()));
+    when(recipeRepository.get(1)).thenReturn(Collections.singletonList(RecipeEntity.builder()
+                                                                                   .id(1)
+                                                                                   .title("チキンカレー")
+                                                                                   .makingTime("45分")
+                                                                                   .serves("4人")
+                                                                                   .ingredients("玉ねぎ,肉,スパイス")
+                                                                                   .cost(1000)
+                                                                                   .createdAt(toSqlTimestamp("2020-02-23 14:00:00"))
+                                                                                   .updatedAt(toSqlTimestamp("2020-02-23 14:00:00"))
+                                                                                   .build()));
 
-    List<Recipe> expected = Arrays.asList(Recipe.builder()
-                                                .id(1)
-                                                .title("チキンカレー")
-                                                .makingTime("45分")
-                                                .serves("4人")
-                                                .ingredients("玉ねぎ,肉,スパイス")
-                                                .cost("1000")
-                                                .build());
+    List<Recipe> expected = Collections.singletonList(Recipe.builder()
+                                                            .id(1)
+                                                            .title("チキンカレー")
+                                                            .makingTime("45分")
+                                                            .serves("4人")
+                                                            .ingredients("玉ねぎ,肉,スパイス")
+                                                            .cost("1000")
+                                                            .build());
 
     List<Recipe> actual = recipeManager.getRecipe(1);
 
@@ -69,7 +69,9 @@ class RecipeManagerImplTest {
     when(recipeRepository.get(10)).thenReturn(Collections.emptyList());
 
     // execute, assert and verify
-    ApplicationException actual = assertThrows(ApplicationException.class, () -> recipeManager.getRecipe(10));
+    ApplicationException actual = assertThrows(
+      ApplicationException.class, () -> recipeManager.getRecipe(10)
+    );
     assertThat(actual.getErrorDetail()).isEqualTo(RECIPE_NOT_FOUND);
   }
 
@@ -151,7 +153,7 @@ class RecipeManagerImplTest {
                                                                                            .updatedAt(toSqlTimestamp("2020-02-23 14:00:00"))
                                                                                            .build()));
 
-    List<Recipe> expected = Arrays.asList(recipe);
+    List<Recipe> expected = Collections.singletonList(recipe);
     List<Recipe> actual = recipeManager.createRecipe(recipe);
 
     assertThat(actual).isEqualTo(expected);
@@ -209,11 +211,23 @@ class RecipeManagerImplTest {
   void test_正常にレシピの更新が行える場合() {
 
     // mock repository method.
+
+    when(recipeRepository.get(1)).thenReturn(Collections.singletonList(RecipeEntity.builder()
+                                                                                   .title("チキンカレー")
+                                                                                   .makingTime("45分")
+                                                                                   .serves("4人")
+                                                                                   .ingredients("玉ねぎ,肉,スパイス")
+                                                                                   .cost(1000)
+                                                                                   .createdAt(toSqlTimestamp("2020-02-23 14:00:00"))
+                                                                                   .updatedAt(toSqlTimestamp("2020-02-23 18:00:00"))
+                                                                                   .build()));
+
     Recipe recipe = Recipe.builder()
                           .id(1)
                           .makingTime("10分")
                           .serves("2人")
                           .build();
+
     when(recipeRepository.update(recipe))
       .thenReturn(Collections.singletonList(RecipeEntity.builder()
                                                         .title("チキンカレー")
@@ -222,7 +236,7 @@ class RecipeManagerImplTest {
                                                         .ingredients("玉ねぎ,肉,スパイス")
                                                         .cost(1000)
                                                         .createdAt(toSqlTimestamp("2020-02-23 14:00:00"))
-                                                        .updatedAt(toSqlTimestamp("2020-03-1 10:00:00"))
+                                                        .updatedAt(toSqlTimestamp("2020-03-01 10:00:00"))
                                                         .build()));
 
     // expected

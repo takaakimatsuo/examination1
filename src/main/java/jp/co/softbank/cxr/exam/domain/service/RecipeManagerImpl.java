@@ -32,9 +32,7 @@ public class RecipeManagerImpl implements RecipeManager {
   public List<Recipe> getRecipe(int id) {
     List<RecipeEntity> recipeEntities = recipeRepository.get(id);
 
-    if (isEmpty(recipeEntities)) {
-      throw new ApplicationException(RECIPE_NOT_FOUND);
-    }
+    checkIfEmpty(recipeEntities);
     return RecipeEntityMapper.fromEntities(recipeEntities);
   }
 
@@ -45,9 +43,7 @@ public class RecipeManagerImpl implements RecipeManager {
   public List<Recipe> getRecipes() {
     List<RecipeEntity> recipeEntities = recipeRepository.getAll();
 
-    if (isEmpty(recipeEntities)) {
-      throw new ApplicationException(RECIPE_NOT_FOUND);
-    }
+    checkIfEmpty(recipeEntities);
     return RecipeEntityMapper.fromEntities(recipeEntities);
   }
 
@@ -68,12 +64,11 @@ public class RecipeManagerImpl implements RecipeManager {
   public List<Recipe> deleteRecipe(int id) {
 
     List<RecipeEntity> recipeEntities = recipeRepository.get(id);
-    if (isEmpty(recipeEntities)) {
-      throw new ApplicationException(RECIPE_NOT_FOUND);
-    }
+    checkIfEmpty(recipeEntities);
     recipeRepository.delete(id);
     return RecipeEntityMapper.fromEntities(recipeEntities);
   }
+
 
   /**
    * {@inheritDoc}
@@ -81,6 +76,20 @@ public class RecipeManagerImpl implements RecipeManager {
    */
   @Override
   public List<Recipe> updateRecipe(Recipe recipe) {
-    return null;
+    List<RecipeEntity> recipeEntities = recipeRepository.get(recipe.getId());
+    checkIfEmpty(recipeEntities);
+    List<RecipeEntity> updatedEntities = recipeRepository.update(recipe);
+    return RecipeEntityMapper.fromEntities(updatedEntities);
+  }
+
+  /**
+   * 引数として渡されたレシピエンティティのリストが空の場合 Application Exception を投げる.
+   *
+   * @param recipeEntities 対象のレシピのエンティティリスト
+   */
+  private void checkIfEmpty(List<RecipeEntity> recipeEntities) {
+    if (isEmpty(recipeEntities)) {
+      throw new ApplicationException(RECIPE_NOT_FOUND);
+    }
   }
 }
