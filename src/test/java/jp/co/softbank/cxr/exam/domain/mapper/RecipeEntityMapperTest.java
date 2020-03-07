@@ -7,11 +7,13 @@ import java.util.Arrays;
 import java.util.List;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import jp.co.softbank.cxr.exam.integration.entity.RecipeEntity;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 
 
 
+@DisplayName("レシピエンティティのマッピングテスト")
 class RecipeEntityMapperTest {
 
   @Test

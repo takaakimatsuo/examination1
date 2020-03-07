@@ -4,16 +4,16 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 
 import java.util.Collections;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 
-
+@DisplayName("レシピからGETレスポンスへのマッピングテスト")
 class GetRecipeResponseTest {
 
-
   @Test
-  void test_レシピのドメインモデルが正常にレスポンスにマッピングされる() {
-    GetRecipeResponse expeceted = GetRecipeResponse.builder()
+  void test_レシピのドメインモデルが正常にGETレシピのレスポンスにマッピングされる() {
+    GetRecipeResponse expected = GetRecipeResponse.builder()
         .message("Recipe details by id")
         .recipePayloadList(Collections.singletonList(RecipePayload.builder()
                                                                   .id(1)
@@ -33,7 +33,7 @@ class GetRecipeResponseTest {
                                                                                     .ingredients("玉ねぎ,肉,スパイス")
                                                                                     .cost("1000")
                                                                                     .build()));
-    assertThat(actual).isEqualTo(expeceted);
+    assertThat(actual).isEqualTo(expected);
   }
 
 }

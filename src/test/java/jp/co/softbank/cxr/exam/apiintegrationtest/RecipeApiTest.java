@@ -26,6 +26,7 @@ import jp.co.softbank.cxr.exam.application.payload.RecipePayload;
 import jp.co.softbank.cxr.exam.application.payload.UpdateRecipeRequest;
 import jp.co.softbank.cxr.exam.application.payload.UpdateRecipeResponse;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 
 
-
+@DisplayName("レシピ管理システムのITテスト")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc

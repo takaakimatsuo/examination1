@@ -46,7 +46,7 @@ import org.springframework.test.web.servlet.MockMvc;
  * RecipeController 単体テスト.
  *
  */
-@DisplayName("RecipeControllerに対するテスト")
+@DisplayName("レシピ管理システムのアプリケーション層のテスト")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -61,41 +61,41 @@ class RecipeControllerTest {
   @MockBean
   RecipeManager recipeManager;
 
-
   @Test
   void test_entryのエンドポイントにリクエストを投げると200レスポンスが返される() throws Exception {
     // execute and assert
     mockMvc.perform(get("/"))
-      .andExpect(status().isOk());
+           .andExpect(status().isOk());
   }
 
   @Test
   void test_指定したidを持つレシピが正常にGETリクエストで返される() throws Exception {
-
     // mock domain method
     when(recipeManager.getRecipe(1)).thenReturn(generateSingleSampleRecipe());
 
     // expected
-    GetRecipeResponse expectedResponse = GetRecipeResponse.builder()
-                                                         .message("Recipe details by id")
-                                                         .recipePayloadList(Arrays.asList(RecipePayload.builder()
-                                                                                                       .id(1)
-                                                                                                       .title("チキンカレー")
-                                                                                                       .makingTime("45分")
-                                                                                                       .serves("4人")
-                                                                                                       .ingredients("玉ねぎ,肉,スパイス")
-                                                                                                       .cost("1000")
-                                                                                                       .build()))
-                                                         .build();
+    GetRecipeResponse expectedResponse
+        = GetRecipeResponse.builder()
+                           .message("Recipe details by id")
+                           .recipePayloadList(Collections.singletonList(RecipePayload.builder()
+                             .id(1)
+                             .title("チキンカレー")
+                             .makingTime("45分")
+                             .serves("4人")
+                             .ingredients("玉ねぎ,肉,スパイス")
+                             .cost("1000")
+                             .build()))
+                           .build();
 
     // execute, assert and verify
     String responseJsonString = mockMvc.perform(get("/recipes/1"))
-        .andExpect(status().isOk())
-        .andReturn().getResponse().getContentAsString();
+                                       .andExpect(status().isOk())
+                                       .andReturn().getResponse().getContentAsString();
     GetRecipeResponse actualResponse = objectMapper.readValue(responseJsonString, GetRecipeResponse.class);
     assertThat(actualResponse).isEqualTo(expectedResponse);
     verify(recipeManager).getRecipe(1);
   }
+
 
   @Test
   void test_指定したidのレシピが存在せずGETとするとエラーが返る() throws Exception {
@@ -108,8 +108,8 @@ class RecipeControllerTest {
 
     // execute, assert and verify
     mockMvc.perform(get("/recipes/10"))
-          .andExpect(status().isNotFound())
-          .andExpect(content().json(expectedResponse));
+           .andExpect(status().isNotFound())
+           .andExpect(content().json(expectedResponse));
     verify(recipeManager).getRecipe(10);
   }
 
@@ -142,8 +142,8 @@ class RecipeControllerTest {
 
     // execute, assert and verify
     String actualJsonString = mockMvc.perform(get("/recipes"))
-        .andExpect(status().isOk())
-        .andReturn().getResponse().getContentAsString();
+                                     .andExpect(status().isOk())
+                                     .andReturn().getResponse().getContentAsString();
 
     String expectedJsonString = objectMapper.writeValueAsString(expectedResponse);
 
@@ -162,8 +162,8 @@ class RecipeControllerTest {
 
     // execute, assert and verify
     mockMvc.perform(get("/recipes"))
-      .andExpect(status().isNotFound())
-      .andExpect(content().json(expectedResponse));
+           .andExpect(status().isNotFound())
+           .andExpect(content().json(expectedResponse));
     verify(recipeManager).getRecipes();
   }
 
@@ -225,13 +225,12 @@ class RecipeControllerTest {
   @Test
   void test_不正なレシピをPOSTリクエストするとエラーが返される() throws Exception {
     // mock domain method
-    // mock domain method
     CreateRecipeRequest recipe = CreateRecipeRequest.builder()
-                          .title("チキンカレー")
-                          .makingTime("45分")
-                          .ingredients("玉ねぎ,肉,スパイス")
-                          .cost("1000")
-                          .build();
+                                                    .title("チキンカレー")
+                                                    .makingTime("45分")
+                                                    .ingredients("玉ねぎ,肉,スパイス")
+                                                    .cost("1000")
+                                                    .build();
 
     // expected error response
     String expectedResponse = objectMapper.writeValueAsString(INVALID_RECIPE);
@@ -239,22 +238,22 @@ class RecipeControllerTest {
 
     // execute, assert and verify
     mockMvc.perform(post("/recipes")
-      .contentType(MediaType.APPLICATION_JSON)
-      .content(objectMapper.writeValueAsBytes(recipe)))
-      .andExpect(status().isBadRequest())
-      .andExpect(content().json(expectedResponse));;
+           .contentType(MediaType.APPLICATION_JSON)
+           .content(objectMapper.writeValueAsBytes(recipe)))
+           .andExpect(status().isBadRequest())
+           .andExpect(content().json(expectedResponse));
   }
 
   @Test
   void test_costに文字が混じっているレシピをPOSTリクエストするとエラーが返される() throws Exception {
     // mock domain method
     CreateRecipeRequest recipe = CreateRecipeRequest.builder()
-      .title("チキンカレー")
-      .serves("2人")
-      .makingTime("45分")
-      .ingredients("玉ねぎ,肉,スパイス")
-      .cost("あいうえお")
-      .build();
+                                                    .title("チキンカレー")
+                                                    .serves("2人")
+                                                    .makingTime("45分")
+                                                    .ingredients("玉ねぎ,肉,スパイス")
+                                                    .cost("あいうえお")
+                                                    .build();
 
     // expected error response
     String expectedResponse = objectMapper.writeValueAsString(INVALID_RECIPE);
@@ -262,10 +261,10 @@ class RecipeControllerTest {
 
     // execute, assert and verify
     mockMvc.perform(post("/recipes")
-      .contentType(MediaType.APPLICATION_JSON)
-      .content(objectMapper.writeValueAsBytes(recipe)))
-      .andExpect(status().isBadRequest())
-      .andExpect(content().json(expectedResponse));;
+           .contentType(MediaType.APPLICATION_JSON)
+           .content(objectMapper.writeValueAsBytes(recipe)))
+           .andExpect(status().isBadRequest())
+           .andExpect(content().json(expectedResponse));
   }
 
   @Test
@@ -275,9 +274,9 @@ class RecipeControllerTest {
     when(recipeManager.deleteRecipe(1)).thenReturn(generateSingleSampleRecipe());
 
     // execute, assert and verify
-   mockMvc.perform(delete("/recipes/1"))
-      .andExpect(status().isNoContent())
-      .andReturn().getResponse().getContentAsString();
+    mockMvc.perform(delete("/recipes/1"))
+           .andExpect(status().isNoContent())
+           .andReturn().getResponse().getContentAsString();
     verify(recipeManager).deleteRecipe(1);
   }
 
@@ -292,8 +291,8 @@ class RecipeControllerTest {
 
     // execute, assert and verify
     mockMvc.perform(delete("/recipes/1"))
-      .andExpect(status().isNotFound())
-      .andExpect(content().json(expectedResponse));
+           .andExpect(status().isNotFound())
+           .andExpect(content().json(expectedResponse));
     verify(recipeManager).deleteRecipe(1);
   }
 
@@ -320,16 +319,17 @@ class RecipeControllerTest {
 
 
     // expected
-    UpdateRecipeResponse expectedResponse = UpdateRecipeResponse.builder()
-                                                                .message("Recipe successfully updated!")
-                                                                .recipePayloadList(Collections.singletonList(RecipePayload.builder()
-                                                                                                                          .title("チキンカレー")
-                                                                                                                          .makingTime("10分")
-                                                                                                                          .serves("2人")
-                                                                                                                          .ingredients("玉ねぎ,肉,スパイス")
-                                                                                                                          .cost("1000")
-                                                                                                                          .build()
-      )).build();
+    UpdateRecipeResponse expectedResponse
+        = UpdateRecipeResponse.builder()
+                              .message("Recipe successfully updated!")
+                              .recipePayloadList(Collections.singletonList(RecipePayload.builder()
+                                                                                        .title("チキンカレー")
+                                                                                        .makingTime("10分")
+                                                                                        .serves("2人")
+                                                                                        .ingredients("玉ねぎ,肉,スパイス")
+                                                                                        .cost("1000")
+                                                                                        .build()))
+                              .build();
 
     // execute & assert
 
@@ -353,27 +353,6 @@ class RecipeControllerTest {
     verify(recipeManager).updateRecipe(recipe);
 
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   private List<Recipe> generateSingleSampleRecipe() {
     return Collections.singletonList(Recipe.builder()
