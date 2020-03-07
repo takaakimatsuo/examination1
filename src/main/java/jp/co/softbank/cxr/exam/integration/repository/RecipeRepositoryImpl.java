@@ -98,13 +98,14 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     RecipeEntity patchRecipeEntity = RecipeEntityMapper.toEntity(recipe);
     Integer id = recipe.getId();
     RecipeEntity recipeEntity = entityManager.find(RecipeEntity.class, id);
-    List<RecipeEntity> result = new ArrayList<>();
+
+    RecipeEntity result = null;
     if (nonNull(recipeEntity)) {
       recipeEntity = patchRecipeEntity(recipeEntity, patchRecipeEntity);
-      result = Collections.singletonList(entityManager.merge(recipeEntity));
+      result = entityManager.merge(recipeEntity);
     }
 
-    return result;
+    return Collections.singletonList(result);
   }
 
   private RecipeEntity patchRecipeEntity(RecipeEntity recipeEntity, RecipeEntity patchRecipeEntity) {

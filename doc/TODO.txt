@@ -31,11 +31,11 @@
 
 5. PATCH /recipes/{id} -> 指定レシピを更新
         a. [×] Controllerの単体テスト
-        b. Controllerの実装
-        c. Domainの単体テスト
-        d. Domainの実装
-        e. Integrationの単体テスト
-        f. Integrationの実装
+        b. [×] Controllerの実装
+        c. [×] Domainの単体テスト
+        d. [×] Domainの実装
+        e. [×] Integrationの単体テスト
+        f. [×] Integrationの実装
         g. ITテストの実装
 
 6. DELETE /recipes/{id} -> 指定レシピの削除
