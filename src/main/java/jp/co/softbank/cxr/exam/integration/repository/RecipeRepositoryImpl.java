@@ -3,18 +3,17 @@ package jp.co.softbank.cxr.exam.integration.repository;
 import static java.util.Objects.nonNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-
 import jp.co.softbank.cxr.exam.common.DateTimeResolver;
 import jp.co.softbank.cxr.exam.domain.mapper.RecipeEntityMapper;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import jp.co.softbank.cxr.exam.integration.entity.RecipeEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
 
 
 /**
@@ -85,7 +84,7 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     if (nonNull(recipeEntity)) {
       entityManager.remove(recipeEntity);
     }
-    return Arrays.asList(recipeEntity);
+    return Collections.singletonList(recipeEntity);
   }
 
 }

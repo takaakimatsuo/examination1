@@ -9,6 +9,8 @@ import jp.co.softbank.cxr.exam.application.payload.CreateRecipeRequest;
 import jp.co.softbank.cxr.exam.application.payload.CreateRecipeResponse;
 import jp.co.softbank.cxr.exam.application.payload.GetRecipeResponse;
 import jp.co.softbank.cxr.exam.application.payload.GetRecipesResponse;
+import jp.co.softbank.cxr.exam.application.payload.UpdateRecipeRequest;
+import jp.co.softbank.cxr.exam.application.payload.UpdateRecipeResponse;
 import jp.co.softbank.cxr.exam.common.InvalidUserInputException;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import jp.co.softbank.cxr.exam.domain.service.RecipeManager;
@@ -18,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -87,6 +90,21 @@ public class RecipeController {
 
     return CreateRecipeResponse.of(registeredRecipe);
   }
+
+  /**
+   * 既存のレシピを更新するためのエンドポイント.
+   *
+   */
+
+  @PatchMapping(path = "/recipes/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  public UpdateRecipeResponse update(@RequestBody @Valid UpdateRecipeRequest recipe,
+                                     BindingResult bindingResult,
+                                     @PathVariable("id") Integer id) {
+    log.info("Request sent to DELETE /recipes/{}", id);
+    return null;
+  }
+
 
   /**
    * 既存のレシピを削除するためのエンドポイント.

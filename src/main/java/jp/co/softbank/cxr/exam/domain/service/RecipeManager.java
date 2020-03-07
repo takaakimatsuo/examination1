@@ -35,4 +35,12 @@ public interface RecipeManager {
    * @return 実際に削除されたレシピ
    */
   List<Recipe> deleteRecipe(int id);
+
+  /**
+   * 既存のレシピの更新.
+   *
+   * @param recipe レシピの更新データ
+   * @return 実際に更新に使用されたレシピ
+   */
+  List<Recipe> updateRecipe(Recipe recipe);
 }

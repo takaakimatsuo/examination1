@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -21,6 +22,8 @@ import jp.co.softbank.cxr.exam.application.payload.CreateRecipeResponse;
 import jp.co.softbank.cxr.exam.application.payload.GetRecipeResponse;
 import jp.co.softbank.cxr.exam.application.payload.GetRecipesResponse;
 import jp.co.softbank.cxr.exam.application.payload.RecipePayload;
+import jp.co.softbank.cxr.exam.application.payload.UpdateRecipeRequest;
+import jp.co.softbank.cxr.exam.application.payload.UpdateRecipeResponse;
 import jp.co.softbank.cxr.exam.common.ApplicationException;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import jp.co.softbank.cxr.exam.domain.service.RecipeManager;
@@ -175,7 +178,7 @@ class RecipeControllerTest {
                           .ingredients("玉ねぎ,肉,スパイス")
                           .cost("1000")
                           .build();
-    Recipe recipeCrested = Recipe.builder()
+    Recipe recipeCreated = Recipe.builder()
                                  .id(1)
                                  .title("チキンカレー")
                                  .makingTime("45分")
@@ -183,7 +186,7 @@ class RecipeControllerTest {
                                  .ingredients("玉ねぎ,肉,スパイス")
                                  .cost("1000")
                                  .build();
-    when(recipeManager.createRecipe(recipe)).thenReturn(Collections.singletonList(recipeCrested));
+    when(recipeManager.createRecipe(recipe)).thenReturn(Collections.singletonList(recipeCreated));
 
     CreateRecipeRequest createRecipeRequest = CreateRecipeRequest.builder()
                                                                  .title("チキンカレー")
@@ -292,6 +295,60 @@ class RecipeControllerTest {
       .andExpect(status().isNotFound())
       .andExpect(content().json(expectedResponse));
     verify(recipeManager).deleteRecipe(1);
+  }
+
+  @Test
+  void test_レシピが正常にPATCHリクエストで更新される() throws Exception {
+
+    // mock domain method
+    Recipe recipe = Recipe.builder()
+                          .id(1)
+                          .makingTime("10分")
+                          .serves("2人")
+                          .build();
+
+    Recipe recipeUpdated = Recipe.builder()
+                                 .title("チキンカレー")
+                                 .makingTime("10分")
+                                 .serves("2人")
+                                 .ingredients("玉ねぎ,肉,スパイス")
+                                 .cost("1000")
+                                 .build();
+
+    when(recipeManager.updateRecipe(recipe)).thenReturn(Collections.singletonList(recipeUpdated));
+
+
+
+    // expected
+    UpdateRecipeResponse expectedResponse = UpdateRecipeResponse.builder()
+      .message("Recipe successfully updated!")
+      .recipePayloadList(Collections.singletonList(RecipePayload.builder()
+        .id(1)
+        .title("チキンカレー")
+        .makingTime("10分")
+        .serves("2人")
+        .ingredients("玉ねぎ,肉,スパイス")
+        .cost("1000")
+        .build()
+      )).build();
+
+    // execute & assert
+
+    UpdateRecipeRequest updateRecipeRequest = UpdateRecipeRequest.builder()
+                                                                 .makingTime("10分")
+                                                                 .serves("2人")
+                                                                 .build();
+    String responseJsonString = mockMvc.perform(patch("/recipes/1")
+      .contentType(MediaType.APPLICATION_JSON)
+      .content(objectMapper.writeValueAsBytes(updateRecipeRequest)))
+      .andExpect(status().isOk())
+      .andReturn().getResponse().getContentAsString();
+
+    UpdateRecipeResponse actualResponse = objectMapper.readValue(responseJsonString, UpdateRecipeResponse.class);
+    assertThat(actualResponse).isEqualTo(expectedResponse);
+
+    verify(recipeManager).updateRecipe(recipe);
+
   }
 
 

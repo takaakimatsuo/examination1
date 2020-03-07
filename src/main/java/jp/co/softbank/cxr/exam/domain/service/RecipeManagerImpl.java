@@ -64,6 +64,7 @@ public class RecipeManagerImpl implements RecipeManager {
    * {@inheritDoc}
    *
    */
+  @Override
   public List<Recipe> deleteRecipe(int id) {
 
     List<RecipeEntity> recipeEntities = recipeRepository.get(id);
@@ -72,5 +73,14 @@ public class RecipeManagerImpl implements RecipeManager {
     }
     recipeRepository.delete(id);
     return RecipeEntityMapper.fromEntities(recipeEntities);
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   */
+  @Override
+  public List<Recipe> updateRecipe(Recipe recipe) {
+    return null;
   }
 }
