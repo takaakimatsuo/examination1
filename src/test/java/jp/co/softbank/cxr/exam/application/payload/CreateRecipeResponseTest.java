@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 
 
-@DisplayName("レシピからPOSTレスポンスへのマッピングテスト")
+@DisplayName("ドメインモデルのレシピからPOSTレスポンスへのマッピングテスト")
 class CreateRecipeResponseTest {
 
   @Test
@@ -29,14 +29,16 @@ class CreateRecipeResponseTest {
                                                           )
                                                         )
                                                         .build();
-    CreateRecipeResponse actual = CreateRecipeResponse.of(Collections.singletonList(Recipe.builder()
-                                                                                          .id(1)
-                                                                                          .title("チキンカレー")
-                                                                                          .makingTime("45分")
-                                                                                          .serves("4人")
-                                                                                          .ingredients("玉ねぎ,肉,スパイス")
-                                                                                          .cost("1000")
-                                                                                          .build()));
+    CreateRecipeResponse actual = CreateRecipeResponse.of(
+        Collections.singletonList(Recipe.builder()
+                                        .id(1)
+                                        .title("チキンカレー")
+                                        .makingTime("45分")
+                                        .serves("4人")
+                                        .ingredients("玉ねぎ,肉,スパイス")
+                                        .cost("1000")
+                                        .build()));
+
     assertThat(actual).isEqualTo(expected);
   }
 }

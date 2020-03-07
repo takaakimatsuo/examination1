@@ -8,7 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 
-@DisplayName("レシピからGETレスポンスへのマッピングテスト")
+@DisplayName("ドメインモデルのレシピからGETレスポンスへのマッピングテスト")
 class GetRecipeResponseTest {
 
   @Test
@@ -25,14 +25,15 @@ class GetRecipeResponseTest {
                                                                   .build()))
         .build();
 
-    GetRecipeResponse actual = GetRecipeResponse.of(Collections.singletonList(Recipe.builder()
-                                                                                    .id(1)
-                                                                                    .title("チキンカレー")
-                                                                                    .makingTime("45分")
-                                                                                    .serves("4人")
-                                                                                    .ingredients("玉ねぎ,肉,スパイス")
-                                                                                    .cost("1000")
-                                                                                    .build()));
+    GetRecipeResponse actual = GetRecipeResponse.of(
+        Collections.singletonList(Recipe.builder()
+                                        .id(1)
+                                        .title("チキンカレー")
+                                        .makingTime("45分")
+                                        .serves("4人")
+                                        .ingredients("玉ねぎ,肉,スパイス")
+                                        .cost("1000")
+                                        .build()));
     assertThat(actual).isEqualTo(expected);
   }
 

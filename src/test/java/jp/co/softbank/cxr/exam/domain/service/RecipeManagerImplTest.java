@@ -44,25 +44,31 @@ class RecipeManagerImplTest {
     class 指定されたIDで正常に特定のレシピを取得できる場合 {
       @Test
       void test_指定されたIDでレシピを取得しリストとしてリターンする() {
-        when(recipeRepository.get(1)).thenReturn(Collections.singletonList(RecipeEntity.builder()
-                                                                                       .id(1)
-                                                                                       .title("チキンカレー")
-                                                                                       .makingTime("45分")
-                                                                                       .serves("4人")
-                                                                                       .ingredients("玉ねぎ,肉,スパイス")
-                                                                                       .cost(1000)
-                                                                                       .createdAt(toSqlTimestamp("2020-02-23 14:00:00"))
-                                                                                       .updatedAt(toSqlTimestamp("2020-02-23 14:00:00"))
-                                                                                       .build()));
+        when(recipeRepository.get(1)).thenReturn(
+            Collections.singletonList(
+              RecipeEntity.builder()
+                          .id(1)
+                          .title("チキンカレー")
+                          .makingTime("45分")
+                          .serves("4人")
+                          .ingredients("玉ねぎ,肉,スパイス")
+                          .cost(1000)
+                          .createdAt(toSqlTimestamp("2020-02-23 14:00:00"))
+                          .updatedAt(toSqlTimestamp("2020-02-23 14:00:00"))
+                          .build())
+        );
 
-        List<Recipe> expected = Collections.singletonList(Recipe.builder()
-                                                                .id(1)
-                                                                .title("チキンカレー")
-                                                                .makingTime("45分")
-                                                                .serves("4人")
-                                                                .ingredients("玉ねぎ,肉,スパイス")
-                                                                .cost("1000")
-                                                                .build());
+        List<Recipe> expected
+            = Collections.singletonList(
+              Recipe.builder()
+                    .id(1)
+                    .title("チキンカレー")
+                    .makingTime("45分")
+                    .serves("4人")
+                    .ingredients("玉ねぎ,肉,スパイス")
+                    .cost("1000")
+                    .build()
+        );
 
         List<Recipe> actual = recipeManager.getRecipe(1);
 
@@ -96,43 +102,49 @@ class RecipeManagerImplTest {
     class 正常に特定のレシピを取得できる場合 {
       @Test
       void test_全てのレシピを取得しリストとしてリターンする() {
-        when(recipeRepository.getAll()).thenReturn(Arrays.asList(RecipeEntity.builder()
-                                                                             .id(1)
-                                                                             .title("チキンカレー")
-                                                                             .makingTime("45分")
-                                                                             .serves("4人")
-                                                                             .ingredients("玉ねぎ,肉,スパイス")
-                                                                             .cost(1000)
-                                                                             .createdAt(toSqlTimestamp("2020-02-23 14:00:00"))
-                                                                             .updatedAt(toSqlTimestamp("2020-02-23 14:00:00"))
-                                                                             .build(),
-                                                                 RecipeEntity.builder()
-                                                                             .id(2)
-                                                                             .title("オムライス")
-                                                                             .makingTime("30分")
-                                                                             .serves("2人")
-                                                                             .ingredients("玉ねぎ,卵,スパイス,醤油")
-                                                                             .cost(700)
-                                                                             .createdAt(toSqlTimestamp("2020-02-23 14:00:00"))
-                                                                             .updatedAt(toSqlTimestamp("2020-02-23 14:00:00"))
-                                                                             .build()));
+        when(recipeRepository.getAll()).thenReturn(
+            Arrays.asList(
+              RecipeEntity.builder()
+                          .id(1)
+                          .title("チキンカレー")
+                          .makingTime("45分")
+                          .serves("4人")
+                          .ingredients("玉ねぎ,肉,スパイス")
+                          .cost(1000)
+                          .createdAt(toSqlTimestamp("2020-02-23 14:00:00"))
+                          .updatedAt(toSqlTimestamp("2020-02-23 14:00:00"))
+                          .build(),
+              RecipeEntity.builder()
+                          .id(2)
+                          .title("オムライス")
+                          .makingTime("30分")
+                          .serves("2人")
+                          .ingredients("玉ねぎ,卵,スパイス,醤油")
+                          .cost(700)
+                          .createdAt(toSqlTimestamp("2020-02-23 14:00:00"))
+                          .updatedAt(toSqlTimestamp("2020-02-23 14:00:00"))
+                          .build()
+            )
+        );
 
-        List<Recipe> expected = Arrays.asList(Recipe.builder()
-                                                    .id(1)
-                                                    .title("チキンカレー")
-                                                    .makingTime("45分")
-                                                    .serves("4人")
-                                                    .ingredients("玉ねぎ,肉,スパイス")
-                                                    .cost("1000")
-                                                    .build(),
-                                              Recipe.builder()
-                                                    .id(2)
-                                                    .title("オムライス")
-                                                    .makingTime("30分")
-                                                    .serves("2人")
-                                                    .ingredients("玉ねぎ,卵,スパイス,醤油")
-                                                    .cost("700")
-                                                    .build());
+        List<Recipe> expected = Arrays.asList(
+            Recipe.builder()
+                  .id(1)
+                  .title("チキンカレー")
+                  .makingTime("45分")
+                  .serves("4人")
+                  .ingredients("玉ねぎ,肉,スパイス")
+                  .cost("1000")
+                  .build(),
+            Recipe.builder()
+                  .id(2)
+                  .title("オムライス")
+                  .makingTime("30分")
+                  .serves("2人")
+                  .ingredients("玉ねぎ,卵,スパイス,醤油")
+                  .cost("700")
+                  .build()
+        );
 
         List<Recipe> actual = recipeManager.getRecipes();
 
@@ -149,7 +161,10 @@ class RecipeManagerImplTest {
         when(recipeRepository.getAll()).thenReturn(Collections.emptyList());
 
         // execute, assert and verify
-        ApplicationException actual = assertThrows(ApplicationException.class, () -> recipeManager.getRecipes());
+        ApplicationException actual = assertThrows(
+            ApplicationException.class, () -> recipeManager.getRecipes()
+        );
+
         assertThat(actual.getErrorDetail()).isEqualTo(RECIPE_NOT_FOUND);
       }
     }
@@ -173,15 +188,18 @@ class RecipeManagerImplTest {
                               .cost("1000")
                               .build();
 
-        when(recipeRepository.create(recipe)).thenReturn(Collections.singletonList(RecipeEntity.builder()
-                                                                                               .title("チキンカレー")
-                                                                                               .makingTime("45分")
-                                                                                               .serves("4人")
-                                                                                               .ingredients("玉ねぎ,肉,スパイス")
-                                                                                               .cost(1000)
-                                                                                               .createdAt(toSqlTimestamp("2020-02-23 14:00:00"))
-                                                                                               .updatedAt(toSqlTimestamp("2020-02-23 14:00:00"))
-                                                                                               .build()));
+        when(recipeRepository.create(recipe)).thenReturn(
+            Collections.singletonList(RecipeEntity.builder()
+                                                  .title("チキンカレー")
+                                                  .makingTime("45分")
+                                                  .serves("4人")
+                                                  .ingredients("玉ねぎ,肉,スパイス")
+                                                  .cost(1000)
+                                                  .createdAt(toSqlTimestamp("2020-02-23 14:00:00"))
+                                                  .updatedAt(toSqlTimestamp("2020-02-23 14:00:00"))
+                                                  .build()
+            )
+        );
 
         List<Recipe> expected = Collections.singletonList(recipe);
         List<Recipe> actual = recipeManager.createRecipe(recipe);
@@ -198,21 +216,28 @@ class RecipeManagerImplTest {
     class 正常に特定のレシピを削除できる場合 {
       @Test
       void test_指定されたIDで削除されたレシピをリストとしてリターンする() {
-        when(recipeRepository.get(1)).thenReturn(Collections.singletonList(RecipeEntity.builder()
-                                                                                       .title("チキンカレー")
-                                                                                       .makingTime("45分")
-                                                                                       .serves("4人")
-                                                                                       .ingredients("玉ねぎ,肉,スパイス")
-                                                                                       .cost(1000)
-                                                                                       .build()));
+        when(recipeRepository.get(1)).thenReturn(
+            Collections.singletonList(
+              RecipeEntity.builder()
+                          .title("チキンカレー")
+                          .makingTime("45分")
+                          .serves("4人")
+                          .ingredients("玉ねぎ,肉,スパイス")
+                          .cost(1000)
+                          .build())
+        );
 
-        when(recipeRepository.delete(1)).thenReturn(Collections.singletonList(RecipeEntity.builder()
-                                                                                              .title("チキンカレー")
-                                                                                              .makingTime("45分")
-                                                                                              .serves("4人")
-                                                                                              .ingredients("玉ねぎ,肉,スパイス")
-                                                                                              .cost(1000)
-                                                                                              .build()));
+        when(recipeRepository.delete(1)).thenReturn(
+            Collections.singletonList(
+              RecipeEntity.builder()
+                          .title("チキンカレー")
+                          .makingTime("45分")
+                          .serves("4人")
+                          .ingredients("玉ねぎ,肉,スパイス")
+                          .cost(1000)
+                          .build()
+            )
+        );
 
         List<Recipe> expected = Collections.singletonList(Recipe.builder()
                                                                 .title("チキンカレー")
@@ -239,7 +264,10 @@ class RecipeManagerImplTest {
 
 
         // execute, assert and verify
-        ApplicationException actual = assertThrows(ApplicationException.class, () -> recipeManager.deleteRecipe(1));
+        ApplicationException actual = assertThrows(
+            ApplicationException.class, () -> recipeManager.deleteRecipe(1)
+        );
+
         assertThat(actual.getErrorDetail()).isEqualTo(RECIPE_NOT_FOUND);
         verify(recipeRepository).get(1);
       }
@@ -254,15 +282,19 @@ class RecipeManagerImplTest {
       void test_指定されたIDで更新されたレシピをリストとしてリターンする() {
 
         // mock repository method.
-        when(recipeRepository.get(1)).thenReturn(Collections.singletonList(RecipeEntity.builder()
-                                                                                       .title("チキンカレー")
-                                                                                       .makingTime("45分")
-                                                                                       .serves("4人")
-                                                                                       .ingredients("玉ねぎ,肉,スパイス")
-                                                                                       .cost(1000)
-                                                                                       .createdAt(toSqlTimestamp("2020-02-23 14:00:00"))
-                                                                                       .updatedAt(toSqlTimestamp("2020-02-23 18:00:00"))
-                                                                                       .build()));
+        when(recipeRepository.get(1)).thenReturn(
+            Collections.singletonList(
+              RecipeEntity.builder()
+                          .title("チキンカレー")
+                          .makingTime("45分")
+                          .serves("4人")
+                          .ingredients("玉ねぎ,肉,スパイス")
+                          .cost(1000)
+                          .createdAt(toSqlTimestamp("2020-02-23 14:00:00"))
+                          .updatedAt(toSqlTimestamp("2020-02-23 18:00:00"))
+                          .build()
+            )
+        );
 
         Recipe recipe = Recipe.builder()
                               .id(1)
@@ -271,15 +303,18 @@ class RecipeManagerImplTest {
                               .build();
 
         when(recipeRepository.update(recipe))
-          .thenReturn(Collections.singletonList(RecipeEntity.builder()
-                                                            .title("チキンカレー")
-                                                            .makingTime("10分")
-                                                            .serves("2人")
-                                                            .ingredients("玉ねぎ,肉,スパイス")
-                                                            .cost(1000)
-                                                            .createdAt(toSqlTimestamp("2020-02-23 14:00:00"))
-                                                            .updatedAt(toSqlTimestamp("2020-03-01 10:00:00"))
-                                                            .build()));
+            .thenReturn(
+              Collections.singletonList(
+                RecipeEntity.builder()
+                            .title("チキンカレー")
+                            .makingTime("10分")
+                            .serves("2人")
+                            .ingredients("玉ねぎ,肉,スパイス")
+                            .cost(1000)
+                            .createdAt(toSqlTimestamp("2020-02-23 14:00:00"))
+                            .updatedAt(toSqlTimestamp("2020-03-01 10:00:00"))
+                            .build()
+              ));
 
         // expected
         List<Recipe> expected = Collections.singletonList(Recipe.builder()

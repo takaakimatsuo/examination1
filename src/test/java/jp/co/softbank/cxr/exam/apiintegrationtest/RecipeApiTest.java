@@ -105,7 +105,10 @@ class RecipeApiTest {
     String responseJsonString = mockMvc.perform(get("/recipes/1"))
                                        .andExpect(status().isOk())
                                        .andReturn().getResponse().getContentAsString();
-    GetRecipeResponse actualResponse = objectMapper.readValue(responseJsonString, GetRecipeResponse.class);
+    GetRecipeResponse actualResponse = objectMapper.readValue(
+        responseJsonString,
+        GetRecipeResponse.class
+    );
     assertThat(actualResponse).isEqualTo(expectedResponse);
   }
 
@@ -153,16 +156,21 @@ class RecipeApiTest {
   @Test
   void test_正常に新しいレシピの登録を行う() throws Exception {
     // expected
-    CreateRecipeResponse expectedResponse = CreateRecipeResponse.builder()
-                                                                .message("Recipe successfully created!")
-                                                                .recipePayloadList(Collections.singletonList(RecipePayload.builder()
-                                                                                                                          .title("カレー")
-                                                                                                                          .makingTime("45分")
-                                                                                                                          .serves("4人")
-                                                                                                                          .ingredients("玉ねぎ,肉,スパイス,カレールー")
-                                                                                                                          .cost("1000")
-                                                                                                                          .build()))
-                                                                .build();
+    CreateRecipeResponse expectedResponse
+        = CreateRecipeResponse.builder()
+                              .message("Recipe successfully created!")
+                              .recipePayloadList(
+                                Collections.singletonList(
+                                  RecipePayload.builder()
+                                               .title("カレー")
+                                               .makingTime("45分")
+                                               .serves("4人")
+                                               .ingredients("玉ねぎ,肉,スパイス,カレールー")
+                                               .cost("1000")
+                                               .build()
+                                )
+                              )
+                              .build();
 
     CreateRecipeRequest createRecipeRequest = CreateRecipeRequest.builder()
                                                               .title("カレー")
@@ -176,16 +184,31 @@ class RecipeApiTest {
     // execute & assert
     String responseJsonString = mockMvc.perform(post("/recipes")
                                        .contentType(MediaType.APPLICATION_JSON)
-                                       .content(objectMapper.writeValueAsBytes(createRecipeRequest)))
+                                       .content(
+                                         objectMapper.writeValueAsBytes(createRecipeRequest)
+                                       ))
                                        .andExpect(status().isCreated())
                                        .andReturn().getResponse().getContentAsString();
 
-    CreateRecipeResponse actualResponse = objectMapper.readValue(responseJsonString, CreateRecipeResponse.class);
-    assertThat(actualResponse.getRecipePayloadList().get(0).getTitle()).isEqualTo(expectedResponse.getRecipePayloadList().get(0).getTitle());
-    assertThat(actualResponse.getRecipePayloadList().get(0).getIngredients()).isEqualTo(expectedResponse.getRecipePayloadList().get(0).getIngredients());
-    assertThat(actualResponse.getRecipePayloadList().get(0).getMakingTime()).isEqualTo(expectedResponse.getRecipePayloadList().get(0).getMakingTime());
-    assertThat(actualResponse.getRecipePayloadList().get(0).getServes()).isEqualTo(expectedResponse.getRecipePayloadList().get(0).getServes());
-    assertThat(actualResponse.getRecipePayloadList().get(0).getCost()).isEqualTo(expectedResponse.getRecipePayloadList().get(0).getCost());
+    CreateRecipeResponse actualResponse = objectMapper.readValue(
+        responseJsonString,
+        CreateRecipeResponse.class
+    );
+
+    assertThat(actualResponse.getRecipePayloadList().get(0).getTitle())
+      .isEqualTo(expectedResponse.getRecipePayloadList().get(0).getTitle());
+
+    assertThat(actualResponse.getRecipePayloadList().get(0).getIngredients())
+      .isEqualTo(expectedResponse.getRecipePayloadList().get(0).getIngredients());
+
+    assertThat(actualResponse.getRecipePayloadList().get(0).getMakingTime())
+      .isEqualTo(expectedResponse.getRecipePayloadList().get(0).getMakingTime());
+
+    assertThat(actualResponse.getRecipePayloadList().get(0).getServes())
+      .isEqualTo(expectedResponse.getRecipePayloadList().get(0).getServes());
+
+    assertThat(actualResponse.getRecipePayloadList().get(0).getCost())
+      .isEqualTo(expectedResponse.getRecipePayloadList().get(0).getCost());
   }
 
 
@@ -209,35 +232,56 @@ class RecipeApiTest {
   @Test
   void test_正常に既存レシピの更新を行う() throws Exception {
     // expected
-    UpdateRecipeResponse expectedResponse = UpdateRecipeResponse.builder()
-                                                                .message("Recipe successfully updated!")
-                                                                .recipePayloadList(Collections.singletonList(RecipePayload.builder()
-                                                                                                                          .title("オムレツ")
-                                                                                                                          .makingTime("30分")
-                                                                                                                          .serves("2人")
-                                                                                                                          .ingredients("玉ねぎ,肉,卵")
-                                                                                                                          .cost("700")
-                                                                                                                          .build()))
-                                                                .build();
+    UpdateRecipeResponse expectedResponse
+        = UpdateRecipeResponse.builder()
+                              .message("Recipe successfully updated!")
+                              .recipePayloadList(
+                                Collections.singletonList(
+                                  RecipePayload.builder()
+                                               .title("オムレツ")
+                                               .makingTime("30分")
+                                               .serves("2人")
+                                               .ingredients("玉ねぎ,肉,卵")
+                                               .cost("700")
+                                               .build()
+                                )
+                              )
+                              .build();
 
-    UpdateRecipeRequest updateRecipeRequest = UpdateRecipeRequest.builder()
-                                                                 .title("オムレツ")
-                                                                 .build();
+    UpdateRecipeRequest updateRecipeRequest
+        = UpdateRecipeRequest.builder()
+                             .title("オムレツ")
+                             .build();
 
 
     // execute & assert
     String responseJsonString = mockMvc.perform(patch("/recipes/2")
                                        .contentType(MediaType.APPLICATION_JSON)
-                                       .content(objectMapper.writeValueAsBytes(updateRecipeRequest)))
+                                       .content(
+                                         objectMapper.writeValueAsBytes(updateRecipeRequest)
+                                       ))
                                        .andExpect(status().isOk())
                                        .andReturn().getResponse().getContentAsString();
 
-    UpdateRecipeResponse actualResponse = objectMapper.readValue(responseJsonString, UpdateRecipeResponse.class);
-    assertThat(actualResponse.getRecipePayloadList().get(0).getTitle()).isEqualTo(expectedResponse.getRecipePayloadList().get(0).getTitle());
-    assertThat(actualResponse.getRecipePayloadList().get(0).getIngredients()).isEqualTo(expectedResponse.getRecipePayloadList().get(0).getIngredients());
-    assertThat(actualResponse.getRecipePayloadList().get(0).getMakingTime()).isEqualTo(expectedResponse.getRecipePayloadList().get(0).getMakingTime());
-    assertThat(actualResponse.getRecipePayloadList().get(0).getServes()).isEqualTo(expectedResponse.getRecipePayloadList().get(0).getServes());
-    assertThat(actualResponse.getRecipePayloadList().get(0).getCost()).isEqualTo(expectedResponse.getRecipePayloadList().get(0).getCost());
+    UpdateRecipeResponse actualResponse = objectMapper.readValue(
+        responseJsonString,
+        UpdateRecipeResponse.class
+    );
+
+    assertThat(actualResponse.getRecipePayloadList().get(0).getTitle())
+      .isEqualTo(expectedResponse.getRecipePayloadList().get(0).getTitle());
+
+    assertThat(actualResponse.getRecipePayloadList().get(0).getIngredients())
+      .isEqualTo(expectedResponse.getRecipePayloadList().get(0).getIngredients());
+
+    assertThat(actualResponse.getRecipePayloadList().get(0).getMakingTime())
+      .isEqualTo(expectedResponse.getRecipePayloadList().get(0).getMakingTime());
+
+    assertThat(actualResponse.getRecipePayloadList().get(0).getServes())
+      .isEqualTo(expectedResponse.getRecipePayloadList().get(0).getServes());
+
+    assertThat(actualResponse.getRecipePayloadList().get(0).getCost())
+      .isEqualTo(expectedResponse.getRecipePayloadList().get(0).getCost());
   }
 
   @Test

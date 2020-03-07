@@ -91,7 +91,11 @@ class RecipeControllerTest {
     String responseJsonString = mockMvc.perform(get("/recipes/1"))
                                        .andExpect(status().isOk())
                                        .andReturn().getResponse().getContentAsString();
-    GetRecipeResponse actualResponse = objectMapper.readValue(responseJsonString, GetRecipeResponse.class);
+    GetRecipeResponse actualResponse = objectMapper.readValue(
+        responseJsonString,
+        GetRecipeResponse.class
+    );
+
     assertThat(actualResponse).isEqualTo(expectedResponse);
     verify(recipeManager).getRecipe(1);
   }
@@ -197,25 +201,35 @@ class RecipeControllerTest {
                                                                  .build();
 
     // expected
-    CreateRecipeResponse expectedResponse = CreateRecipeResponse.builder()
-                                                                .message("Recipe successfully created!")
-                                                                .recipePayloadList(Collections.singletonList(RecipePayload.builder()
-                                                                                                                          .id(1)
-                                                                                                                          .title("チキンカレー")
-                                                                                                                          .makingTime("45分")
-                                                                                                                          .serves("4人")
-                                                                                                                          .ingredients("玉ねぎ,肉,スパイス")
-                                                                                                                          .cost("1000")
-                                                                                                                          .build()
-                                                              )).build();
+    CreateRecipeResponse expectedResponse
+        = CreateRecipeResponse.builder()
+                              .message("Recipe successfully created!")
+                              .recipePayloadList(
+                                Collections.singletonList(
+                                  RecipePayload.builder()
+                                               .id(1)
+                                               .title("チキンカレー")
+                                               .makingTime("45分")
+                                               .serves("4人")
+                                               .ingredients("玉ねぎ,肉,スパイス")
+                                               .cost("1000")
+                                               .build()
+                                )
+                              ).build();
 
     // execute & assert
     String responseJsonString = mockMvc.perform(post("/recipes")
                                        .contentType(MediaType.APPLICATION_JSON)
-                                       .content(objectMapper.writeValueAsBytes(createRecipeRequest)))
+                                       .content(
+                                         objectMapper.writeValueAsBytes(createRecipeRequest)
+                                       ))
                                        .andExpect(status().isCreated())
                                        .andReturn().getResponse().getContentAsString();
-    CreateRecipeResponse actualResponse = objectMapper.readValue(responseJsonString, CreateRecipeResponse.class);
+
+    CreateRecipeResponse actualResponse = objectMapper.readValue(
+        responseJsonString, CreateRecipeResponse.class
+    );
+
     assertThat(actualResponse).isEqualTo(expectedResponse);
 
     verify(recipeManager).createRecipe(recipe);
@@ -322,13 +336,17 @@ class RecipeControllerTest {
     UpdateRecipeResponse expectedResponse
         = UpdateRecipeResponse.builder()
                               .message("Recipe successfully updated!")
-                              .recipePayloadList(Collections.singletonList(RecipePayload.builder()
-                                                                                        .title("チキンカレー")
-                                                                                        .makingTime("10分")
-                                                                                        .serves("2人")
-                                                                                        .ingredients("玉ねぎ,肉,スパイス")
-                                                                                        .cost("1000")
-                                                                                        .build()))
+                              .recipePayloadList(
+                                Collections.singletonList(
+                                  RecipePayload.builder()
+                                               .title("チキンカレー")
+                                               .makingTime("10分")
+                                               .serves("2人")
+                                               .ingredients("玉ねぎ,肉,スパイス")
+                                               .cost("1000")
+                                               .build()
+                                )
+                              )
                               .build();
 
     // execute & assert

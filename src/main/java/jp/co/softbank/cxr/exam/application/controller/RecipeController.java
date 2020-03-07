@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * レシピ管理システムの REST コントローラー.
+ *
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -42,6 +43,7 @@ public class RecipeController {
 
   /**
    * entry のエンドポイント.
+   *
    */
   @GetMapping(path = "/")
   @ResponseStatus(HttpStatus.OK)

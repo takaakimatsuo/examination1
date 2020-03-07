@@ -81,16 +81,18 @@ class RecipeRepositoryImplTest {
       @Test
       void test_指定したidでレシピをリストとしてリターンする() {
         // expected
-        List<RecipeEntity> expected = Arrays.asList(RecipeEntity.builder()
-          .id(1)
-          .title("チキンカレー")
-          .makingTime("45分")
-          .serves("4人")
-          .ingredients("玉ねぎ,肉,スパイス")
-          .cost(1000)
-          .createdAt(toSqlTimestamp("2016-01-10 12:10:12"))
-          .updatedAt(toSqlTimestamp("2016-01-11 12:10:12"))
-          .build());
+        List<RecipeEntity> expected = Collections.singletonList(
+            RecipeEntity.builder()
+                        .id(1)
+                        .title("チキンカレー")
+                        .makingTime("45分")
+                        .serves("4人")
+                        .ingredients("玉ねぎ,肉,スパイス")
+                        .cost(1000)
+                        .createdAt(toSqlTimestamp("2016-01-10 12:10:12"))
+                        .updatedAt(toSqlTimestamp("2016-01-11 12:10:12"))
+                        .build()
+        );
 
         // execute
         List<RecipeEntity> actual = recipeRepository.get(1);
@@ -118,26 +120,27 @@ class RecipeRepositoryImplTest {
       @Test
       void test_全てのレシピをリストとしてリターンする() {
         // expected
-        List<RecipeEntity> expected = Arrays.asList(RecipeEntity.builder()
-                                                                .id(1)
-                                                                .title("チキンカレー")
-                                                                .makingTime("45分")
-                                                                .serves("4人")
-                                                                .ingredients("玉ねぎ,肉,スパイス")
-                                                                .cost(1000)
-                                                                .createdAt(toSqlTimestamp("2016-01-10 12:10:12"))
-                                                                .updatedAt(toSqlTimestamp("2016-01-11 12:10:12"))
-                                                                .build(),
-        RecipeEntity.builder()
-                    .id(2)
-                    .title("オムライス")
-                    .makingTime("30分")
-                    .serves("2人")
-                    .ingredients("玉ねぎ,卵,スパイス,醤油")
-                    .cost(700)
-                    .createdAt(toSqlTimestamp("2016-02-10 12:10:12"))
-                    .updatedAt(toSqlTimestamp("2016-02-11 12:10:12"))
-                    .build());
+        List<RecipeEntity> expected = Arrays.asList(
+            RecipeEntity.builder()
+                        .id(1)
+                        .title("チキンカレー")
+                        .makingTime("45分")
+                        .serves("4人")
+                        .ingredients("玉ねぎ,肉,スパイス")
+                        .cost(1000)
+                        .createdAt(toSqlTimestamp("2016-01-10 12:10:12"))
+                        .updatedAt(toSqlTimestamp("2016-01-11 12:10:12"))
+                        .build(),
+            RecipeEntity.builder()
+                        .id(2)
+                        .title("オムライス")
+                        .makingTime("30分")
+                        .serves("2人")
+                        .ingredients("玉ねぎ,卵,スパイス,醤油")
+                        .cost(700)
+                        .createdAt(toSqlTimestamp("2016-02-10 12:10:12"))
+                        .updatedAt(toSqlTimestamp("2016-02-11 12:10:12"))
+                        .build());
 
         // execute
         List<RecipeEntity> actual = recipeRepository.getAll();
@@ -171,25 +174,29 @@ class RecipeRepositoryImplTest {
       void test_レシピを正常に登録() {
 
         Recipe recipe = Recipe.builder()
-          .title("チキンスープ")
-          .makingTime("45分")
-          .serves("4人")
-          .ingredients("玉ねぎ,鳥肉,スパイス")
-          .cost("1000")
-          .build();
+                              .title("チキンスープ")
+                              .makingTime("45分")
+                              .serves("4人")
+                              .ingredients("玉ねぎ,鳥肉,スパイス")
+                              .cost("1000")
+                              .build();
         // expected
-        List<RecipeEntity> expected = Collections.singletonList(RecipeEntity.builder()
-          .title("チキンスープ")
-          .makingTime("45分")
-          .serves("4人")
-          .ingredients("玉ねぎ,鳥肉,スパイス")
-          .cost(1000)
-          .build());
+        List<RecipeEntity> expected = Collections.singletonList(
+            RecipeEntity.builder()
+                        .title("チキンスープ")
+                        .makingTime("45分")
+                        .serves("4人")
+                        .ingredients("玉ねぎ,鳥肉,スパイス")
+                        .cost(1000)
+                        .build()
+        );
 
         // execute
         List<RecipeEntity> actual = recipeRepository.create(recipe);
         // assert
-        assertThat(actual).usingElementComparatorIgnoringFields("id", "createdAt", "updatedAt").isEqualTo(expected);
+        assertThat(actual)
+          .usingElementComparatorIgnoringFields("id", "createdAt", "updatedAt")
+          .isEqualTo(expected);
       }
     }
   }
@@ -202,19 +209,24 @@ class RecipeRepositoryImplTest {
       @Test
       void test_削除されたレシピのエンティティをリストとしてリターンする() {
         // expected
-        List<RecipeEntity> expected = Collections.singletonList(RecipeEntity.builder()
-                                                                            .title("チキンカレー")
-                                                                            .makingTime("45分")
-                                                                            .serves("4人")
-                                                                            .ingredients("玉ねぎ,肉,スパイス")
-                                                                            .cost(1000)
-                                                                            .build());
+        List<RecipeEntity> expected
+            = Collections.singletonList(
+              RecipeEntity.builder()
+                          .title("チキンカレー")
+                          .makingTime("45分")
+                          .serves("4人")
+                          .ingredients("玉ねぎ,肉,スパイス")
+                          .cost(1000)
+                          .build()
+        );
 
         // execute
         List<RecipeEntity> actual = recipeRepository.delete(1);
 
         // assert
-        assertThat(actual).usingElementComparatorIgnoringFields("id", "createdAt", "updatedAt").isEqualTo(expected);
+        assertThat(actual)
+          .usingElementComparatorIgnoringFields("id", "createdAt", "updatedAt")
+          .isEqualTo(expected);
       }
     }
 
@@ -251,18 +263,22 @@ class RecipeRepositoryImplTest {
                               .build();
 
         // expected
-        List<RecipeEntity> expected = Collections.singletonList(RecipeEntity.builder()
-                                                                            .title("チキンカレー")
-                                                                            .makingTime("20分")
-                                                                            .serves("2人")
-                                                                            .ingredients("玉ねぎ,肉,スパイス")
-                                                                            .cost(1000)
-                                                                            .build());
+        List<RecipeEntity> expected
+            = Collections.singletonList(
+              RecipeEntity.builder()
+                          .title("チキンカレー")
+                          .makingTime("20分")
+                          .serves("2人")
+                          .ingredients("玉ねぎ,肉,スパイス")
+                          .cost(1000)
+                          .build());
         // execute
         List<RecipeEntity> actual = recipeRepository.update(recipe);
 
         // assert
-        assertThat(actual).usingElementComparatorIgnoringFields("id", "createdAt", "updatedAt").isEqualTo(expected);
+        assertThat(actual)
+          .usingElementComparatorIgnoringFields("id", "createdAt", "updatedAt")
+          .isEqualTo(expected);
       }
 
       @Test
@@ -278,18 +294,22 @@ class RecipeRepositoryImplTest {
                               .build();
 
         // expected
-        List<RecipeEntity> expected = Collections.singletonList(RecipeEntity.builder()
-                                                                            .title("新しいカレー")
-                                                                            .makingTime("120分")
-                                                                            .serves("1人")
-                                                                            .ingredients("真玉ねぎ,黒毛和牛肉,スパイス")
-                                                                            .cost(20000)
-                                                                            .build());
+        List<RecipeEntity> expected = Collections.singletonList(
+            RecipeEntity.builder()
+                        .title("新しいカレー")
+                        .makingTime("120分")
+                        .serves("1人")
+                        .ingredients("真玉ねぎ,黒毛和牛肉,スパイス")
+                        .cost(20000)
+                        .build()
+        );
         // execute
         List<RecipeEntity> actual = recipeRepository.update(recipe);
 
         // assert
-        assertThat(actual).usingElementComparatorIgnoringFields("id", "createdAt", "updatedAt").isEqualTo(expected);
+        assertThat(actual)
+          .usingElementComparatorIgnoringFields("id", "createdAt", "updatedAt")
+          .isEqualTo(expected);
       }
     }
 

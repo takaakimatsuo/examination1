@@ -1,11 +1,10 @@
 package jp.co.softbank.cxr.exam;
 
-import static io.restassured.RestAssured.*;
-import static io.restassured.matcher.RestAssuredMatchers.*;
-import static io.restassured.module.jsv.JsonSchemaValidator.*;
-import static jp.co.softbank.cxr.exam.TestUtils.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.hamcrest.Matchers.*;
+import static io.restassured.RestAssured.given;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static jp.co.softbank.cxr.exam.TestUtils.readMessageFromFile;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 import io.restassured.RestAssured;
 import org.apache.commons.validator.routines.UrlValidator;

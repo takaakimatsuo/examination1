@@ -11,9 +11,16 @@ import org.apache.commons.io.IOUtils;
 public final class TestUtils {
   
   private TestUtils() {
- // Do Nothing.
+   // Do Nothing.
   }
-  
+
+  /**
+   * ファイルの内容を文字列に変換.
+   *
+   * @param path ファイルへのパス
+   * @return ファイルの内容
+   * @throws IOException ファイルの読み込みに失敗した場合エラーを投げる
+   */
   public static String readMessageFromFile(String path) throws IOException {
     String result = null;
 

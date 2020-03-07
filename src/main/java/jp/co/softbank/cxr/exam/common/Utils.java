@@ -1,10 +1,11 @@
 package jp.co.softbank.cxr.exam.common;
 
+import static jp.co.softbank.cxr.exam.common.ErrorDetailsRequired.INVALID_RECIPE;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static jp.co.softbank.cxr.exam.common.ErrorDetailsRequired.INVALID_RECIPE;
 
 public class Utils {
 
@@ -15,7 +16,12 @@ public class Utils {
    * @return Timestamp型のに日時
    */
   public static Timestamp toSqlTimestamp(String dateTime) {
-    return Timestamp.valueOf(LocalDateTime.parse(dateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+    return Timestamp.valueOf(
+      LocalDateTime.parse(
+        dateTime,
+        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+      )
+    );
   }
 
   /**

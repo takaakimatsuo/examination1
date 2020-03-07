@@ -49,7 +49,11 @@ public class GlobalExceptionHandler {
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   private ResponseEntity<ErrorResponseRequired> handleApplicationException(InvalidUserInputException e) {
 
-    ErrorResponseRequired errorResponse = new ErrorResponseRequired(e.getErrorDetail().getMessage(), e.getErrorDetail().getRequired());
+    ErrorResponseRequired errorResponse = new ErrorResponseRequired(
+        e.getErrorDetail().getMessage(),
+        e.getErrorDetail().getRequired()
+    );
+    
     if (e.getErrorDetail().equals(INVALID_RECIPE)) {
       return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
