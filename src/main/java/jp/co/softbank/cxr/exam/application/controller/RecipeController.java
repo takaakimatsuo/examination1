@@ -50,8 +50,10 @@ public class RecipeController {
   }
 
   /**
-   * 指定したIDでレシピを get するためのエンドポイント.
+   * 指定したIDで特定のレシピを取得するためのエンドポイント.
    *
+   * @param id 取得するレシピの ID
+   * @return 取得したレシピの情報とメッセージ
    */
   @GetMapping(path = "/recipes/{id}")
   @ResponseStatus(HttpStatus.OK)
@@ -62,8 +64,9 @@ public class RecipeController {
   }
 
   /**
-   * 全てのレシピを get するためのエンドポイント.
+   * 全てのレシピを取得するためのエンドポイント.
    *
+   * @return 取得したレシピの情報とメッセージ
    */
   @GetMapping(path = "/recipes")
   @ResponseStatus(HttpStatus.OK)
@@ -76,6 +79,9 @@ public class RecipeController {
   /**
    * 新しいレシピを登録するためのエンドポイント.
    *
+   * @param recipe 作成するレシピの情報
+   * @param bindingResult 入力チェックのエラー情報
+   * @return 作成されたレシピの情報
    */
   @PostMapping(path = "/recipes")
   @ResponseStatus(HttpStatus.CREATED)
@@ -94,21 +100,32 @@ public class RecipeController {
   /**
    * 既存のレシピを更新するためのエンドポイント.
    *
+   * @param recipe レシピの更新情報
+   * @param id 更新対象のレシピの ID
+   * @param bindingResult 入力チェックのエラー情報
+   * @return 更新後のレシピの情報
    */
-
   @PatchMapping(path = "/recipes/{id}")
   @ResponseStatus(HttpStatus.OK)
   public UpdateRecipeResponse update(@RequestBody @Valid UpdateRecipeRequest recipe,
                                      BindingResult bindingResult,
                                      @PathVariable("id") Integer id) {
-    log.info("Request sent to DELETE /recipes/{}", id);
-    return null;
+    if (bindingResult.hasErrors()) {
+      throw new InvalidUserInputException(INVALID_RECIPE);
+    }
+
+    Recipe test = recipe.toModel(id);
+    List<Recipe> recipes = recipeManager.updateRecipe(recipe.toModel(id));
+
+    log.info("Request sent to PATCH /recipes/{}", id);
+    return UpdateRecipeResponse.of(recipes);
   }
 
 
   /**
    * 既存のレシピを削除するためのエンドポイント.
    *
+   * @param id 削除対象のレシピの ID
    */
 
   @DeleteMapping(path = "/recipes/{id}")

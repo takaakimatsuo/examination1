@@ -54,6 +54,7 @@ public class RecipeEntityMapper {
    * レシピのドメインモデルからレシピエンティティからに変換.
    *
    * @param recipe レシピのドメインモデル
+   * @param currentTime 現在の日時
    * @return レシピのエンティティ
    */
   public static RecipeEntity toEntity(Recipe recipe, LocalDateTime currentTime) {

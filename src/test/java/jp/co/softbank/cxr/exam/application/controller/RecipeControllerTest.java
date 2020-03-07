@@ -321,15 +321,14 @@ class RecipeControllerTest {
 
     // expected
     UpdateRecipeResponse expectedResponse = UpdateRecipeResponse.builder()
-      .message("Recipe successfully updated!")
-      .recipePayloadList(Collections.singletonList(RecipePayload.builder()
-        .id(1)
-        .title("チキンカレー")
-        .makingTime("10分")
-        .serves("2人")
-        .ingredients("玉ねぎ,肉,スパイス")
-        .cost("1000")
-        .build()
+                                                                .message("Recipe successfully updated!")
+                                                                .recipePayloadList(Collections.singletonList(RecipePayload.builder()
+                                                                                                                          .title("チキンカレー")
+                                                                                                                          .makingTime("10分")
+                                                                                                                          .serves("2人")
+                                                                                                                          .ingredients("玉ねぎ,肉,スパイス")
+                                                                                                                          .cost("1000")
+                                                                                                                          .build()
       )).build();
 
     // execute & assert
@@ -338,13 +337,17 @@ class RecipeControllerTest {
                                                                  .makingTime("10分")
                                                                  .serves("2人")
                                                                  .build();
-    String responseJsonString = mockMvc.perform(patch("/recipes/1")
-      .contentType(MediaType.APPLICATION_JSON)
-      .content(objectMapper.writeValueAsBytes(updateRecipeRequest)))
-      .andExpect(status().isOk())
-      .andReturn().getResponse().getContentAsString();
 
-    UpdateRecipeResponse actualResponse = objectMapper.readValue(responseJsonString, UpdateRecipeResponse.class);
+    String responseJsonString = mockMvc.perform(patch("/recipes/1")
+                                       .contentType(MediaType.APPLICATION_JSON)
+                                       .content(
+                                         objectMapper.writeValueAsBytes(updateRecipeRequest))
+                                        )
+                                       .andExpect(status().isOk())
+                                       .andReturn().getResponse().getContentAsString();
+
+    UpdateRecipeResponse actualResponse = objectMapper.readValue(responseJsonString,
+                                                                 UpdateRecipeResponse.class);
     assertThat(actualResponse).isEqualTo(expectedResponse);
 
     verify(recipeManager).updateRecipe(recipe);

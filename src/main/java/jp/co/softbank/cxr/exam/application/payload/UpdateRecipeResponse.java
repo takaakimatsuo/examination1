@@ -26,5 +26,20 @@ public class UpdateRecipeResponse {
   @JsonProperty(value = "recipe")
   private List<RecipePayload> recipePayloadList;
 
+  /**
+   * レシピのドメインモデルのリストからレシピ更新レスポンスに変換.
+   *
+   * @param recipes 更新されたレシピのリスト
+   * @return レシピ更新レスポンス
+   */
+  public static UpdateRecipeResponse of(List<Recipe> recipes) {
+    return UpdateRecipeResponse.builder()
+                               .message(PATCH_RECIPE_RESPONSE)
+                               .recipePayloadList(recipes.stream()
+                                 .map(RecipePayload::of)
+                                 .collect(Collectors.toList()))
+                               .build();
+  }
+
 
 }
