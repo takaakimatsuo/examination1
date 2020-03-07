@@ -2,6 +2,7 @@ package jp.co.softbank.cxr.exam.integration.repository;
 
 import static java.util.Objects.nonNull;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -94,7 +95,37 @@ public class RecipeRepositoryImpl implements RecipeRepository {
   @Override
   @Transactional
   public List<RecipeEntity> update(Recipe recipe) {
-    return null;
+    RecipeEntity patchRecipeEntity = RecipeEntityMapper.toEntity(recipe);
+    Integer id = recipe.getId();
+    RecipeEntity recipeEntity = entityManager.find(RecipeEntity.class, id);
+    List<RecipeEntity> result = new ArrayList<>();
+    if (nonNull(recipeEntity)) {
+      recipeEntity = patchRecipeEntity(recipeEntity, patchRecipeEntity);
+      result = Collections.singletonList(entityManager.merge(recipeEntity));
+    }
+
+    return result;
+  }
+
+  private RecipeEntity patchRecipeEntity(RecipeEntity recipeEntity, RecipeEntity patchRecipeEntity) {
+    recipeEntity.setUpdatedAt(Timestamp.valueOf(dateTimeResolver.getCurrentTime()));
+
+    if (nonNull(patchRecipeEntity.getTitle())) {
+      recipeEntity.setTitle(patchRecipeEntity.getTitle());
+    }
+    if (nonNull(patchRecipeEntity.getMakingTime())) {
+      recipeEntity.setMakingTime(patchRecipeEntity.getMakingTime());
+    }
+    if (nonNull(patchRecipeEntity.getCost())) {
+      recipeEntity.setCost(patchRecipeEntity.getCost());
+    }
+    if (nonNull(patchRecipeEntity.getIngredients())) {
+      recipeEntity.setIngredients(patchRecipeEntity.getIngredients());
+    }
+    if (nonNull(patchRecipeEntity.getServes())) {
+      recipeEntity.setServes(patchRecipeEntity.getServes());
+    }
+    return recipeEntity;
   }
 
 }

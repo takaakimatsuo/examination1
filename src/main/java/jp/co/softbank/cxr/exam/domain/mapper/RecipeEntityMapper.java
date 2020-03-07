@@ -7,6 +7,7 @@ import java.util.List;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
 import jp.co.softbank.cxr.exam.integration.entity.RecipeEntity;
 
+import static java.util.Objects.isNull;
 
 
 /**
@@ -67,6 +68,23 @@ public class RecipeEntityMapper {
       .cost(Integer.parseInt(recipe.getCost()))
       .updatedAt(Timestamp.valueOf(currentTime))
       .createdAt(Timestamp.valueOf(currentTime))
+      .build();
+  }
+
+  /**
+   * レシピのドメインモデルからレシピエンティティからに変換.
+   *
+   * @param recipe レシピのドメインモデル
+   * @return レシピのエンティティ
+   */
+  public static RecipeEntity toEntity(Recipe recipe) {
+    return RecipeEntity.builder()
+      .id(isNull(recipe.getId()) ? null : recipe.getId())
+      .title(isNull(recipe.getTitle()) ? null : recipe.getTitle())
+      .serves(isNull(recipe.getServes()) ? null : recipe.getServes())
+      .ingredients(isNull(recipe.getIngredients()) ? null : recipe.getIngredients())
+      .makingTime(isNull(recipe.getMakingTime()) ? null : recipe.getMakingTime())
+      .cost(isNull(recipe.getCost()) ? null : Integer.parseInt(recipe.getCost()))
       .build();
   }
 }
