@@ -59,8 +59,7 @@ public class RecipeRepositoryImpl implements RecipeRepository {
    */
   @Override
   public List<RecipeEntity> getAll() {
-    List<RecipeEntity> recipeEntity = entityManager.createQuery(SELECT_ALL_FROM_RECIPES, RecipeEntity.class).getResultList();
-    return recipeEntity;
+    return entityManager.createQuery(SELECT_ALL_FROM_RECIPES, RecipeEntity.class).getResultList();
   }
 
   /**
@@ -69,7 +68,9 @@ public class RecipeRepositoryImpl implements RecipeRepository {
   @Override
   @Transactional
   public List<RecipeEntity> create(Recipe recipe) {
-    RecipeEntity recipeEntity = RecipeEntityMapper.toEntity(recipe, dateTimeResolver.getCurrentTime());
+    RecipeEntity recipeEntity = RecipeEntityMapper.toEntity(recipe,
+                                                            dateTimeResolver.getCurrentTime()
+    );
     entityManager.persist(recipeEntity);
     return Collections.singletonList(recipeEntity);
   }
@@ -85,6 +86,15 @@ public class RecipeRepositoryImpl implements RecipeRepository {
       entityManager.remove(recipeEntity);
     }
     return Collections.singletonList(recipeEntity);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  @Transactional
+  public List<RecipeEntity> update(Recipe recipe) {
+    return null;
   }
 
 }

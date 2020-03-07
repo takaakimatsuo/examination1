@@ -205,4 +205,56 @@ class RecipeManagerImplTest {
     verify(recipeRepository).get(1);
   }
 
+  @Test
+  void test_正常にレシピの更新が行える場合() {
+
+    // mock repository method.
+    Recipe recipe = Recipe.builder()
+                          .id(1)
+                          .makingTime("10分")
+                          .serves("2人")
+                          .build();
+    when(recipeRepository.update(recipe))
+      .thenReturn(Collections.singletonList(RecipeEntity.builder()
+                                                        .title("チキンカレー")
+                                                        .makingTime("10分")
+                                                        .serves("2人")
+                                                        .ingredients("玉ねぎ,肉,スパイス")
+                                                        .cost(1000)
+                                                        .createdAt(toSqlTimestamp("2020-02-23 14:00:00"))
+                                                        .updatedAt(toSqlTimestamp("2020-03-1 10:00:00"))
+                                                        .build()));
+
+    // expected
+    List<Recipe> expected = Collections.singletonList(Recipe.builder()
+                                                            .title("チキンカレー")
+                                                            .makingTime("10分")
+                                                            .serves("2人")
+                                                            .ingredients("玉ねぎ,肉,スパイス")
+                                                            .cost("1000")
+                                                            .build());
+
+    List<Recipe> actual = recipeManager.updateRecipe(recipe);
+
+    assertThat(actual).isEqualTo(expected);
+    verify(recipeRepository).get(1);
+    verify(recipeRepository).update(recipe);
+  }
+
+  @Test
+  void test_レシピ更新対象が存在しない場合() {
+    when(recipeRepository.get(10)).thenReturn(Collections.emptyList());
+
+    // mock repository method.
+    Recipe recipe = Recipe.builder()
+                          .id(10)
+                          .makingTime("10分")
+                          .serves("2人")
+                          .build();
+    // execute, assert and verify
+    ApplicationException actual = assertThrows(ApplicationException.class, () -> recipeManager.updateRecipe(recipe));
+    assertThat(actual.getErrorDetail()).isEqualTo(RECIPE_NOT_FOUND);
+    verify(recipeRepository).get(10);
+  }
+
 }
