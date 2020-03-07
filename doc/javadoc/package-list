@@ -1,0 +1,10 @@
+jp.co.softbank.cxr.exam
+jp.co.softbank.cxr.exam.application.controller
+jp.co.softbank.cxr.exam.application.payload
+jp.co.softbank.cxr.exam.common
+jp.co.softbank.cxr.exam.common.handler
+jp.co.softbank.cxr.exam.domain.mapper
+jp.co.softbank.cxr.exam.domain.model
+jp.co.softbank.cxr.exam.domain.service
+jp.co.softbank.cxr.exam.integration.entity
+jp.co.softbank.cxr.exam.integration.repository
