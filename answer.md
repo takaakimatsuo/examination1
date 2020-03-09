@@ -28,29 +28,34 @@ DI の手法は以下の三種類が主に使用される。
         
     }
 ```
+
 - Constructor injection
+
 ```
-class Hoge {
 
-  final Huga huga;
+    class Hoge {
 
-  @Autowired
-  public Hoge(Huga huga;) {
-    this.huga = huga;
-  }
-}
-```
-- Setter injection
-```
-class Hoge {
+        final Huga huga;
 
-    Huga huga;
-
-    @Autowired
-    void setHuga(Huga huga) {
-        this.huga = huga;
+        @Autowired
+                 public Hoge(Huga huga;) {
+                     this.huga = huga;
+                 }
     }
-}
+```
+
+- Setter injection
+
+```
+    class Hoge {
+    
+        Huga huga;
+    
+        @Autowired
+        void setHuga(Huga huga) {
+            this.huga = huga;
+        }
+    }
 ```
 
 なお、Springでは@Componentの代わりに@Componentを継承している@Controller、@Service、@Repository を使用することもできる。
@@ -66,24 +71,23 @@ class Hoge {
 ```
 
 ```
-@Repository("HugaRepository1")
-public class HugaRepository1 implements Huga {
+    @Repository("HugaRepository1")
+    public class HugaRepository1 implements Huga {
 
-    @Override
-    public void doSomething() {
-       //省略
+        @Override
+        public void doSomething() {
+           //省略
+        }
     }
 
-}
-
-@Repository("HugaRepository2")
-public class HugaRepository2 implements Huga {
-
-    @Override
-    public void doSomething() {
-       //省略
+    @Repository("HugaRepository2")
+    public class HugaRepository2 implements Huga {
+    
+        @Override
+        public void doSomething() {
+           //省略
+        }
     }
-}
 ```
 
 
@@ -105,50 +109,50 @@ DI の利点は以下に示す。
 
 ###DIの実装への活用
 ```java:RecipeController.java
-//RecipeControllerはRecipeManagerに依存しており、@Autowireを使って注入を行なっている。
-
-@RestController
-public class RecipeController {
-  
-    @Autowired
-    private final RecipeManager recipeManager;
-
-    //以下省略
-
-}
+    //RecipeControllerはRecipeManagerに依存しており、@Autowireを使って注入を行なっている。
+    
+    @RestController
+    public class RecipeController {
+      
+        @Autowired
+        private final RecipeManager recipeManager;
+    
+        //以下省略
+    
+    }
 ```
 
 ```java:RecipeManagerImpl.java
-//RecipeManagerはRecipeControllerに注入される対象であるため、@ComponentによってSpringの管理下におく。
-//また、依存しているRecipeRepositoryを注入する。
-
-@Component
-public class RecipeManagerImpl implements RecipeManager {
-
-  @Autowired
-  private RecipeRepository recipeRepository;
-
-    //以下省略
-
-}
+    //RecipeManagerはRecipeControllerに注入される対象であるため、@ComponentによってSpringの管理下におく。
+    //また、依存しているRecipeRepositoryを注入する。
+    
+    @Component
+    public class RecipeManagerImpl implements RecipeManager {
+    
+      @Autowired
+      private RecipeRepository recipeRepository;
+    
+        //以下省略
+    
+    }
 ```
 
 ```java:RecipeRepositoryImpl.java
-//RecipeRepositoryはRecipeManagerに注入される対象であるため、@ComponentによってSpringの管理下におく。
-//また、依存しているEntityManagerとDateTimeResolverを注入する。
-
-@Component
-public class RecipeRepositoryImpl implements RecipeRepository {
-
-  private static final String SELECT_ALL_FROM_RECIPES = "FROM RecipeEntity";
-
-  @Autowired
-  EntityManager entityManager;
-
-  @Autowired
-  DateTimeResolver dateTimeResolver;
-
-}
+    //RecipeRepositoryはRecipeManagerに注入される対象であるため、@ComponentによってSpringの管理下におく。
+    //また、依存しているEntityManagerとDateTimeResolverを注入する。
+    
+    @Component
+    public class RecipeRepositoryImpl implements RecipeRepository {
+    
+      private static final String SELECT_ALL_FROM_RECIPES = "FROM RecipeEntity";
+    
+      @Autowired
+      EntityManager entityManager;
+    
+      @Autowired
+      DateTimeResolver dateTimeResolver;
+    
+    }
 ```
 
 ###DIのテストへの活用
@@ -160,58 +164,58 @@ public class RecipeRepositoryImpl implements RecipeRepository {
 具体的な例はRecipeManagerを用いて以下に示す。
 
 ```
-@DisplayName("レシピ管理システムのビジネスロジックを扱うドメイン層のテスト")
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-@AutoConfigureMockMvc
-class RecipeManagerImplTest {
-
-  @InjectMocks
-  RecipeManagerImpl recipeManager;
-
-  @Mock
-  RecipeRepository recipeRepository;
+    @DisplayName("レシピ管理システムのビジネスロジックを扱うドメイン層のテスト")
+    @ExtendWith(SpringExtension.class)
+    @SpringBootTest
+    @AutoConfigureMockMvc
+    class RecipeManagerImplTest {
     
- @Nested
-  class 特定のレシピを取得する時 {
-    @Nested
-    class 指定されたIDで正常に特定のレシピを取得できる場合 {
-      @Test
-      void test_指定されたIDでレシピを取得しリストとしてリターンする() {
-        when(recipeRepository.get(1)).thenReturn(
-            Collections.singletonList(
-              RecipeEntity.builder()
-                          .id(1)
-                          .title("チキンカレー")
-                          .makingTime("45分")
-                          .serves("4人")
-                          .ingredients("玉ねぎ,肉,スパイス")
-                          .cost(1000)
-                          .createdAt(toSqlTimestamp("2020-02-23 14:00:00"))
-                          .updatedAt(toSqlTimestamp("2020-02-23 14:00:00"))
-                          .build())
-        );
-
-        List<Recipe> expected
-            = Collections.singletonList(
-              Recipe.builder()
-                    .id(1)
-                    .title("チキンカレー")
-                    .makingTime("45分")
-                    .serves("4人")
-                    .ingredients("玉ねぎ,肉,スパイス")
-                    .cost("1000")
-                    .build()
-        );
-
-        List<Recipe> actual = recipeManager.getRecipe(1);
-
-        assertThat(actual).isEqualTo(expected);
-        verify(recipeRepository).get(1);
-      }
+      @InjectMocks
+      RecipeManagerImpl recipeManager;
+    
+      @Mock
+      RecipeRepository recipeRepository;
+        
+     @Nested
+      class 特定のレシピを取得する時 {
+        @Nested
+        class 指定されたIDで正常に特定のレシピを取得できる場合 {
+          @Test
+          void test_指定されたIDでレシピを取得しリストとしてリターンする() {
+            when(recipeRepository.get(1)).thenReturn(
+                Collections.singletonList(
+                  RecipeEntity.builder()
+                              .id(1)
+                              .title("チキンカレー")
+                              .makingTime("45分")
+                              .serves("4人")
+                              .ingredients("玉ねぎ,肉,スパイス")
+                              .cost(1000)
+                              .createdAt(toSqlTimestamp("2020-02-23 14:00:00"))
+                              .updatedAt(toSqlTimestamp("2020-02-23 14:00:00"))
+                              .build())
+            );
+    
+            List<Recipe> expected
+                = Collections.singletonList(
+                  Recipe.builder()
+                        .id(1)
+                        .title("チキンカレー")
+                        .makingTime("45分")
+                        .serves("4人")
+                        .ingredients("玉ねぎ,肉,スパイス")
+                        .cost("1000")
+                        .build()
+            );
+    
+            List<Recipe> actual = recipeManager.getRecipe(1);
+    
+            assertThat(actual).isEqualTo(expected);
+            verify(recipeRepository).get(1);
+          }
+        }
+        //以下省略
     }
-    //以下省略
-}
 ```
 
 上記の例では、@MockでアノテートされたRecipeRepositoryが@InjectMocksでアノテートされた
