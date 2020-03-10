@@ -4,6 +4,10 @@ import java.util.List;
 import jp.co.softbank.cxr.exam.domain.model.Recipe;
 
 
+/**
+ * レシピ管理システムのビジネスロジックを扱うマネージャのインターフェース.
+ *
+ */
 public interface RecipeManager {
   /**
    * 指定した id をもつレシピを取得.

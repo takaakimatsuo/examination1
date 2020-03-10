@@ -32,7 +32,7 @@ public class RecipeManagerImpl implements RecipeManager {
   public List<Recipe> getRecipe(int id) {
     List<RecipeEntity> recipeEntities = recipeRepository.get(id);
 
-    checkIfEmpty(recipeEntities);
+    throwApplicationExceptionIfEmpty(recipeEntities);
     return RecipeEntityMapper.fromEntities(recipeEntities);
   }
 
@@ -43,7 +43,7 @@ public class RecipeManagerImpl implements RecipeManager {
   public List<Recipe> getRecipes() {
     List<RecipeEntity> recipeEntities = recipeRepository.getAll();
 
-    checkIfEmpty(recipeEntities);
+    throwApplicationExceptionIfEmpty(recipeEntities);
     return RecipeEntityMapper.fromEntities(recipeEntities);
   }
 
@@ -64,7 +64,7 @@ public class RecipeManagerImpl implements RecipeManager {
   public List<Recipe> deleteRecipe(int id) {
 
     List<RecipeEntity> recipeEntities = recipeRepository.get(id);
-    checkIfEmpty(recipeEntities);
+    throwApplicationExceptionIfEmpty(recipeEntities);
     recipeRepository.delete(id);
     return RecipeEntityMapper.fromEntities(recipeEntities);
   }
@@ -77,17 +77,17 @@ public class RecipeManagerImpl implements RecipeManager {
   @Override
   public List<Recipe> updateRecipe(Recipe recipe) {
     List<RecipeEntity> recipeEntities = recipeRepository.get(recipe.getId());
-    checkIfEmpty(recipeEntities);
+    throwApplicationExceptionIfEmpty(recipeEntities);
     List<RecipeEntity> updatedEntities = recipeRepository.update(recipe);
     return RecipeEntityMapper.fromEntities(updatedEntities);
   }
 
   /**
-   * 引数として渡されたレシピエンティティのリストが空の場合 Application Exception を投げる.
+   * 引数のレシピエンティティのリストが空の場合 Application Exception を投げる.
    *
    * @param recipeEntities 対象のレシピのエンティティリスト
    */
-  private void checkIfEmpty(List<RecipeEntity> recipeEntities) {
+  private void throwApplicationExceptionIfEmpty(List<RecipeEntity> recipeEntities) {
     if (isEmpty(recipeEntities)) {
       throw new ApplicationException(RECIPE_NOT_FOUND);
     }

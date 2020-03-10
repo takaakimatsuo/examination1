@@ -28,7 +28,7 @@ public interface RecipeRepository {
   List<RecipeEntity> getAll();
 
   /**
-   * レシピをデータベースに登録.
+   * 新しいレシピをデータベースに登録.
    *
    * @param recipe 登録対象のレシピ
    * @return 登録されたレシピのエンティティを含むリスト
@@ -36,7 +36,7 @@ public interface RecipeRepository {
   List<RecipeEntity> create(Recipe recipe);
 
   /**
-   * レシピをデータベースから削除.
+   * 既存のレシピをデータベースから削除.
    *
    * @param id 削除対象のレシピの ID
    * @return 削除されたレシピのエンティティを含むリスト

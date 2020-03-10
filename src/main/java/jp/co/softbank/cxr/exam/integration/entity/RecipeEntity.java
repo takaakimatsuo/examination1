@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * レシピを表すエンティティ.
+ * 
  */
 @AllArgsConstructor
 @NoArgsConstructor

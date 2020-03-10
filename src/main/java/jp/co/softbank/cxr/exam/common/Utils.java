@@ -27,11 +27,11 @@ public class Utils {
   /**
    * 文字列が数字に変換可能かチェック.
    *
-   * @param cost レシピのコスト
+   * @param string 任意の文字列
    */
-  public static void resolveCost(String cost) {
+  public static void resolveCost(String string) {
     try {
-      Integer.parseInt(cost);
+      Integer.parseInt(string);
     } catch (NumberFormatException e) {
       throw new InvalidUserInputException(INVALID_RECIPE);
     }

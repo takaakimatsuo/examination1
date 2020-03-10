@@ -12,7 +12,7 @@ import jp.co.softbank.cxr.exam.integration.entity.RecipeEntity;
 
 
 /**
- * レシピのドメインモデルとエンティティを相互に変換を行うマッパー.
+ * レシピのドメインモデル( {@link Recipe})とエンティティ ({@link RecipeEntity} )を相互に変換を行うマッパー.
  *
  */
 public class RecipeEntityMapper {

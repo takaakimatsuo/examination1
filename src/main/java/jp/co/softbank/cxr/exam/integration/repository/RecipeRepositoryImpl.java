@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 
-
 /**
  * {@link RecipeRepository} の実装クラス.
  *
@@ -108,6 +107,13 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     return Collections.singletonList(result);
   }
 
+  /**
+   * 更新されたレシピ情報を生成.
+   *
+   * @param recipeEntity 現在のレシピ情報を保持するエンティティ
+   * @param patchRecipeEntity 更新差分を保持するエンティティ
+   * @return 更新後のレシピ情報を保持するエンティティ
+   */
   private RecipeEntity patchRecipeEntity(RecipeEntity recipeEntity, RecipeEntity patchRecipeEntity) {
     recipeEntity.setUpdatedAt(Timestamp.valueOf(dateTimeResolver.getCurrentTime()));
 
