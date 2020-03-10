@@ -18,6 +18,8 @@ import com.ninja_squad.dbsetup.destination.DriverManagerDestination;
 import com.ninja_squad.dbsetup.operation.Operation;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+
 import jp.co.softbank.cxr.exam.application.payload.CreateRecipeRequest;
 import jp.co.softbank.cxr.exam.application.payload.CreateRecipeResponse;
 import jp.co.softbank.cxr.exam.application.payload.GetRecipeResponse;
@@ -195,20 +197,9 @@ class RecipeApiTest {
         CreateRecipeResponse.class
     );
 
-    assertThat(actualResponse.getRecipePayloadList().get(0).getTitle())
-      .isEqualTo(expectedResponse.getRecipePayloadList().get(0).getTitle());
-
-    assertThat(actualResponse.getRecipePayloadList().get(0).getIngredients())
-      .isEqualTo(expectedResponse.getRecipePayloadList().get(0).getIngredients());
-
-    assertThat(actualResponse.getRecipePayloadList().get(0).getMakingTime())
-      .isEqualTo(expectedResponse.getRecipePayloadList().get(0).getMakingTime());
-
-    assertThat(actualResponse.getRecipePayloadList().get(0).getServes())
-      .isEqualTo(expectedResponse.getRecipePayloadList().get(0).getServes());
-
-    assertThat(actualResponse.getRecipePayloadList().get(0).getCost())
-      .isEqualTo(expectedResponse.getRecipePayloadList().get(0).getCost());
+    // assert
+    assertEqualsIgnoreId(actualResponse.getRecipePayloadList().get(0),
+      expectedResponse.getRecipePayloadList().get(0));
   }
 
 
@@ -268,20 +259,9 @@ class RecipeApiTest {
         UpdateRecipeResponse.class
     );
 
-    assertThat(actualResponse.getRecipePayloadList().get(0).getTitle())
-      .isEqualTo(expectedResponse.getRecipePayloadList().get(0).getTitle());
-
-    assertThat(actualResponse.getRecipePayloadList().get(0).getIngredients())
-      .isEqualTo(expectedResponse.getRecipePayloadList().get(0).getIngredients());
-
-    assertThat(actualResponse.getRecipePayloadList().get(0).getMakingTime())
-      .isEqualTo(expectedResponse.getRecipePayloadList().get(0).getMakingTime());
-
-    assertThat(actualResponse.getRecipePayloadList().get(0).getServes())
-      .isEqualTo(expectedResponse.getRecipePayloadList().get(0).getServes());
-
-    assertThat(actualResponse.getRecipePayloadList().get(0).getCost())
-      .isEqualTo(expectedResponse.getRecipePayloadList().get(0).getCost());
+    // assert
+    assertEqualsIgnoreId(actualResponse.getRecipePayloadList().get(0),
+                         expectedResponse.getRecipePayloadList().get(0));
   }
 
   @Test
@@ -299,6 +279,20 @@ class RecipeApiTest {
            .content(objectMapper.writeValueAsBytes(updateRecipeRequest)))
            .andExpect(status().isNotFound())
            .andExpect(content().json(expectedResponse));
+  }
+
+  /**
+   * 実際の{@link RecipePayload}を理想形と ID を除いて比較する。
+   *
+   * @param actual 実際のレシピのペイロード
+   * @param expected　理想形のレシピのペイロード
+   */
+  private void assertEqualsIgnoreId(RecipePayload actual, RecipePayload expected) {
+    assertThat(actual.getTitle()).isEqualTo(expected.getTitle());
+    assertThat(actual.getIngredients()).isEqualTo(expected.getIngredients());
+    assertThat(actual.getMakingTime()).isEqualTo(expected.getMakingTime());
+    assertThat(actual.getServes()).isEqualTo(expected.getServes());
+    assertThat(actual.getCost()).isEqualTo(expected.getCost());
   }
 
 
