@@ -1,5 +1,7 @@
 package jp.co.softbank.cxr.exam.application.payload;
 
+import static jp.co.softbank.cxr.exam.common.messages.ResponseMessages.PATCH_RECIPE_RESPONSE;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,17 +10,13 @@ import lombok.Builder;
 import lombok.Data;
 
 
-
 /**
  * レシピの更新に使うレスポンスを表すクラス.
  *
  */
-
 @Data
 @Builder
 public class UpdateRecipeResponse {
-
-  private static final String PATCH_RECIPE_RESPONSE = "Recipe successfully updated!";
 
   @JsonProperty(value = "message")
   private String message;

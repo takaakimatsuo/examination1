@@ -1,5 +1,7 @@
 package jp.co.softbank.cxr.exam.application.payload;
 
+import static jp.co.softbank.cxr.exam.common.messages.ResponseMessages.POST_RECIPE_RESPONSE;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +20,6 @@ import lombok.Data;
 @Builder
 public class CreateRecipeResponse {
 
-  private static final String POST_RECIPE_RESPONSE = "Recipe successfully created!";
 
   @JsonProperty(value = "message")
   private String message;
