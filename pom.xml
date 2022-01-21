@@ -38,7 +38,7 @@
     <commons-validator.version>1.6</commons-validator.version>
     <commons-io.version>2.6</commons-io.version>
     <jupiter.version>5.3.2</jupiter.version>
-    <h2database.version>1.4.199</h2database.version>
+    <h2database.version>2.1.210</h2database.version>
     <dbsetup.version>2.1.0</dbsetup.version>
   </properties>
 
